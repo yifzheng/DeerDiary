@@ -6,7 +6,7 @@ Tianye Chen, tianyecf@gmail.com, tianye-chen
 Collin Shi, cshi0418@gmail.com, collin-shi
 Bohui Nong, bohui64@gmail.com, bohuinong
 
-##Deer Diary
+# Deer Diary
 
 ### Digitize a traditional diary
 An Android application that can digitally take entries and to-do tasks
