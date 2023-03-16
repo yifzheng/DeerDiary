@@ -1,6 +1,6 @@
 # Deer Diary: [Login Activity](https://github.com/cunychenhclass/cisc3171proj-group6/issues/2)
 
-When the user clicks on the login button on the starting activity, it routes the user to this page. Here, users are prompted to enter the fields: email and password,
+When the user clicks on the login button on the starting activity or *Login Here* on the register activity, it routes the user to this page. Here, users are prompted to enter the fields: email and password,
 for user authentication. 
 - On Success: The user is routed to the homepage of the app
 - On Failure: Login fails and the app will prompt the user what the error was during the login process
