@@ -2,8 +2,11 @@
 
 When the user clicks on the login button on the starting activity or *Login Here* on the register activity, it routes the user to this page. Here, users are prompted to enter the fields: email and password,
 for user authentication. 
-- On Success: The user is routed to the homepage of the app
-- On Failure: Login fails and the app will prompt the user what the error was during the login process
+### On Success
+- The user is routed to the homepage of the app
+### On Failure
+- Login fails and the app will prompt the user what the error was during the login process
+- User failed to verify their email
 
 ### Further Information
 - If the user is not registered, the user has the opportunity to create an account by clicking on *Register Here* to be routed to the registration page.
