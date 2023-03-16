@@ -13,3 +13,6 @@ four text fields to fill out during the account creation process.
 - If the user already made an account, the user can click on *login Here* to login
 
 ![registerActivity](https://user-images.githubusercontent.com/70163313/225717147-74b5b7e0-d470-497c-b2b5-8527eec92f7d.png)
+
+## WIKI
+- ### [WIKI LINK](https://github.com/cunychenhclass/cisc3171proj-group6/wiki/Deer-Diary-Wiki)
