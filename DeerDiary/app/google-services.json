@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "375703842880",
+    "project_id": "deer-diary-63ca1",
+    "storage_bucket": "deer-diary-63ca1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375703842880:android:55875292fa914d70daafa5",
+        "android_client_info": {
+          "package_name": "com.example.deerdiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "375703842880-i8dapc1qj9g9ssmkk7rpqfvn6p4ci1bs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.deerdiary",
+            "certificate_hash": "71263a672c895f92a4bf08692f0b0404b1963223"
+          }
+        },
+        {
+          "client_id": "375703842880-61i5fc8gpbptf2cavm02kv9ho85t16or.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlbUalPVeXBdLjAwQP7awhLQdcglIAvAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "375703842880-61i5fc8gpbptf2cavm02kv9ho85t16or.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
