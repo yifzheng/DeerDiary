@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Deer Diary</string>
+    <string name="deer_diary">Deer Diary</string>
+    <string name="deer_logo">deer_logo</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
 </resources>
