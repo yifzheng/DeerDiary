@@ -12,12 +12,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="cursive"
         android:text="@string/deer_diary"
         android:textAlignment="center"
         android:textColor="@color/font_color"
-        android:textSize="76sp"
+        android:textSize="72sp"
         android:textStyle="bold" />
 
     <ImageView
@@ -26,9 +26,9 @@
         android:layout_height="380dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@mipmap/ic_applogo_foreground"
+        android:src="@mipmap/ic_applogo2_foreground"
         android:layout_alignTop="@+id/appName"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="90dp"
         android:contentDescription="@string/deer_logo" />
 
     <Button
@@ -40,27 +40,28 @@
         android:layout_marginBottom="150dp"
         android:backgroundTint="@color/green_100"
         android:fontFamily="cursive"
-        android:minWidth="175dp"
+        android:minWidth="190dp"
         android:minHeight="60dp"
         android:text="@string/login"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="28sp"
         android:textStyle="bold" />
+
     <Button
         android:id="@+id/start_register_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/magenta_100"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:minHeight="60dp"
-        android:minWidth="175dp"
-        android:text="@string/register"
-        android:textColor="@color/white"
-        android:textAlignment="center"
+        android:layout_marginBottom="80dp"
+        android:backgroundTint="@color/magenta_100"
         android:fontFamily="cursive"
-        android:textStyle="bold"
+        android:minWidth="190dp"
+        android:minHeight="60dp"
+        android:text="@string/register"
+        android:textAlignment="center"
+        android:textColor="@color/white"
         android:textSize="28sp"
-        android:layout_marginBottom="80dp"/>
+        android:textStyle="bold" />
 </RelativeLayout>
