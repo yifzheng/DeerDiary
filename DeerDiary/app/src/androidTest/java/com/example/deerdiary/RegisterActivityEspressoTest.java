@@ -11,6 +11,7 @@ import static org.junit.Assert.assertEquals;
 
 import android.content.Intent;
 
+import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -30,11 +31,51 @@ public class RegisterActivityEspressoTest {
     public ActivityScenarioRule<RegisterActivity> activityActivityScenarioRule = new ActivityScenarioRule<RegisterActivity>(RegisterActivity.class);
 
     @Test
-    public void A_UIElementsDisplayedTest(){}
+    public void A_UIElementsDisplayedTest(){
+        onView(withId(R.id.register_firstname)).check(matches(isDisplayed())); // check if the edit text field is rendered
+        onView(withId(R.id.register_lastname)).check(matches(isDisplayed())); // check if the edit text field is rendered
+        onView(withId(R.id.register_email)).check(matches(isDisplayed())); // check if the edit text field is rendered
+        onView(withId(R.id.register_password)).check(matches(isDisplayed())); // check if the edit text field is rendered
+        onView(withId(R.id.register_button)).check(matches(isDisplayed())); // check if the button is rendered
+        onView(withId(R.id.register_button)).check(matches(withText("Register")));
+    }
     @Test
-    public void B_MissingFieldErrorTest(){}
+    public void B_MissingPasswordErrorTest(){
+        onView(withId(R.id.register_firstname)).perform(typeText("Admin"));
+        onView(withId(R.id.register_lastname)).perform(typeText("User"));
+        onView(withId(R.id.register_email)).perform(typeText("admin@gmail.com"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.register_button)).perform(click());
+        onView(withId(R.id.register_password)).check(matches(hasErrorText("Password cannot be empty")));
+    }
     @Test
-    public void C_RegisterButtonClickTest(){}
+    public void C_MissingEmailErrorTest(){
+        onView(withId(R.id.register_firstname)).perform(typeText("Admin"));
+        onView(withId(R.id.register_lastname)).perform(typeText("User"));
+        onView(withId(R.id.register_password)).perform(typeText("password"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.register_button)).perform(click());
+        onView(withId(R.id.register_email)).check(matches(hasErrorText("Email cannot be empty")));
+    }
     @Test
-    public void D_LoginHereRouteTest(){}
+    public void D_MissingLastNameErrorTest(){
+        onView(withId(R.id.register_firstname)).perform(typeText("Admin"));
+        onView(withId(R.id.register_email)).perform(typeText("admin@gmail.com"));
+        onView(withId(R.id.register_password)).perform(typeText("password"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.register_button)).perform(click());
+        onView(withId(R.id.register_lastname)).check(matches(hasErrorText("Last Name cannot be empty")));
+    }
+    @Test
+    public void E_MissingFirstNameErrorTest(){
+        onView(withId(R.id.register_lastname)).perform(typeText("User"));
+        onView(withId(R.id.register_email)).perform(typeText("admin@gmail.com"));
+        onView(withId(R.id.register_password)).perform(typeText("password"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.register_button)).perform(click());
+        onView(withId(R.id.register_firstname)).check(matches(hasErrorText("First Name cannot be empty")));
+    }
+    @Test
+    public void F_LoginHereRouteTest(){
+        Intents.init();
+        onView(withId(R.id.register_loginhere)).perform(click());
+        intended(hasComponent("com.example.deerdiary.LoginActivity"));
+        Intents.release();
+    }
 }

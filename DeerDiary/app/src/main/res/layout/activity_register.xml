@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity"
-    android:background="@color/background">
+    android:background="@color/background"
+    tools:context=".RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +29,11 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@color/font_color"
+            app:boxStrokeErrorColor="@color/error">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_firstname"
@@ -46,7 +50,11 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@color/font_color"
+            app:boxStrokeErrorColor="@color/error">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_lastname"
@@ -63,14 +71,19 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@color/font_color"
+            app:boxStrokeErrorColor="@color/error">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
-                android:layout_gravity="center"
                 android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,7 +91,11 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@color/font_color"
+            app:boxStrokeErrorColor="@color/error">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/register_password"
@@ -108,28 +125,26 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="20dp"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:text="@string/already_registered"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_marginStart="20dp"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/register_loginhere"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:text="@string/login_here"
                 android:textColor="@color/green_100"
-                android:textStyle="bold"
                 android:textSize="18sp"
-                android:layout_marginStart="20dp"
-                />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
