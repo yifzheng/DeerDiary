@@ -24,10 +24,12 @@ public class StartActivity extends AppCompatActivity {
         // set onclick listener to login button
         activityStartBinding.startLoginBtn.setOnClickListener(view -> {
             Intent intent = new Intent(StartActivity.this, LoginActivity.class);
+            startActivity(intent);
         });
         // set onclick listener to register button
         activityStartBinding.startRegisterBtn.setOnClickListener(view -> {
             Intent intent = new Intent(StartActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 }
