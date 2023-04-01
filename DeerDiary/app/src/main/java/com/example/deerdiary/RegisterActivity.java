@@ -72,17 +72,17 @@ public class RegisterActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         // if we successfully created user with email and password, we send email verification
-//                        myAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                Toast.makeText(RegisterActivity.this, "User registered successfully. Please verify your email.", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
+                        myAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(RegisterActivity.this, "User registered successfully. Please verify your email.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         // create a user object to store into the database
                         User user = new User(firstName, lastName, email);
                         // retrieve the UID of recent created user
                         String userUID = task.getResult().getUser().getUid();
-                        // add user obejct into database with the UID as ID of the reference
+                        // add user object into database with the UID as ID of the reference
                         userRef.document(userUID).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
