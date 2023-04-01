@@ -11,4 +11,5 @@
     <color name="font_color">#E06531</color>
     <color name="green_100">#8BC552</color>
     <color name="magenta_100">#C552B9</color>
+    <color name="error">#ff2424</color>
 </resources>
