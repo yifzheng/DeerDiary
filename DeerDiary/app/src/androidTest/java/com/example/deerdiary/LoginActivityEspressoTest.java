@@ -25,12 +25,30 @@ public class LoginActivityEspressoTest {
     public ActivityScenarioRule<LoginActivity> activityActivityScenarioRule = new ActivityScenarioRule<LoginActivity>(LoginActivity.class);
 
     @Test
-    public void A_UIElementsDisplayedTest(){}
+    public void A_UIElementsDisplayedTest(){
+        onView(withId(R.id.login_email)).check(matches(isDisplayed())); // check if field is rendered
+        onView(withId(R.id.login_password)).check(matches(isDisplayed())); // check if field is rendered
+        onView(withId(R.id.login_button)).check(matches(isDisplayed())); // check if button is rendered
+        onView(withId(R.id.login_button)).check(matches(withText("Login")));
+    }
     @Test
-    public void B_MissingFieldsTest() {}
+    public void B_MissingEmailFieldsTest() {
+        onView(withId(R.id.login_password)).perform(typeText("password"), ViewActions.closeSoftKeyboard()); // type password
+        onView(withId(R.id.login_button)).perform(click());
+        onView(withId(R.id.login_email)).check(matches(hasErrorText("Email cannot be empty")));
+    }
     @Test
-    public void C_RegisterHereRouteTest(){}
+    public void C_MissingPasswordFieldsTest() {
+        onView(withId(R.id.login_email)).perform(typeText("admin@gmail.com"), ViewActions.closeSoftKeyboard()); // type password
+        onView(withId(R.id.login_button)).perform(click());
+        onView(withId(R.id.login_password)).check(matches(hasErrorText("Password cannot be empty")));
+    }
     @Test
-    public void D_LoginTest(){}
+    public void D_RegisterHereRouteTest(){
+        Intents.init();
+        onView(withId(R.id.login_registerhere)).perform(click());
+        intended(hasComponent("com.example.deerdiary.RegisterActivity"));
+        Intents.release();
+    }
 
 }

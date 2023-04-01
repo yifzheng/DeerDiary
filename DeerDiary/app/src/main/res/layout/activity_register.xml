@@ -22,7 +22,7 @@
             android:fontFamily="serif-monospace"
             android:text="@string/registerButton"
             android:textColor="#D84315"
-            android:textSize="58sp"
+            android:textSize="56sp"
             android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
