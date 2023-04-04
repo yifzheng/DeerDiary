@@ -38,14 +38,14 @@ public class StartActivity extends AppCompatActivity {
         });
     }
     // comment out for testing login and register functionality
-//    @Override
-//    protected void onStart(){
-//        super.onStart();
-//        // check for set current user and if no user logged in stay on activity else route to MainActivity
-//        currentUser = myAuth.getCurrentUser();
-//        if (currentUser != null)
-//        {
-//            startActivity(new Intent(StartActivity.this, MainActivity.class)); // move to main activity
-//        }
-//    }
+    @Override
+    protected void onStart(){
+        super.onStart();
+        // check for set current user and if no user logged in stay on activity else route to MainActivity
+        currentUser = myAuth.getCurrentUser();
+        if (currentUser != null)
+        {
+            startActivity(new Intent(StartActivity.this, MainActivity.class)); // move to main activity
+        }
+    }
 }
