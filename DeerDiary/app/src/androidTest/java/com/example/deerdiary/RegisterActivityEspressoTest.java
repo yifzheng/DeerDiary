@@ -34,6 +34,7 @@ public class RegisterActivityEspressoTest {
         onView(withId(R.id.register_button)).check(matches(isDisplayed())); // check if the button is rendered
         onView(withId(R.id.register_button)).check(matches(withText("Register")));
     }
+    //<-----Issue #1: Scenario 2-------------->
     @Test
     public void B_MissingPasswordErrorTest(){
         onView(withId(R.id.register_firstname)).perform(typeText("Admin"));
@@ -42,6 +43,7 @@ public class RegisterActivityEspressoTest {
         onView(withId(R.id.register_button)).perform(click());
         onView(withId(R.id.register_password)).check(matches(hasErrorText("Password cannot be empty")));
     }
+    //<-----Issue #1: Scenario 2-------------->
     @Test
     public void C_MissingEmailErrorTest(){
         onView(withId(R.id.register_firstname)).perform(typeText("Admin"));
@@ -50,6 +52,7 @@ public class RegisterActivityEspressoTest {
         onView(withId(R.id.register_button)).perform(click());
         onView(withId(R.id.register_email)).check(matches(hasErrorText("Email cannot be empty")));
     }
+    //<-----Issue #1: Scenario 2-------------->
     @Test
     public void D_MissingLastNameErrorTest(){
         onView(withId(R.id.register_firstname)).perform(typeText("Admin"));
@@ -58,6 +61,7 @@ public class RegisterActivityEspressoTest {
         onView(withId(R.id.register_button)).perform(click());
         onView(withId(R.id.register_lastname)).check(matches(hasErrorText("Last Name cannot be empty")));
     }
+    //<-----Issue #1: Scenario 2-------------->
     @Test
     public void E_MissingFirstNameErrorTest(){
         onView(withId(R.id.register_lastname)).perform(typeText("User"));
