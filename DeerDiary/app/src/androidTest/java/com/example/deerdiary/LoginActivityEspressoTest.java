@@ -31,12 +31,14 @@ public class LoginActivityEspressoTest {
         onView(withId(R.id.login_button)).check(matches(isDisplayed())); // check if button is rendered
         onView(withId(R.id.login_button)).check(matches(withText("Login")));
     }
+    //<-----Issue #2: Scenario 2-------------->
     @Test
     public void B_MissingEmailFieldsTest() {
         onView(withId(R.id.login_password)).perform(typeText("password"), ViewActions.closeSoftKeyboard()); // type password
         onView(withId(R.id.login_button)).perform(click());
         onView(withId(R.id.login_email)).check(matches(hasErrorText("Email cannot be empty")));
     }
+    //<-----Issue #2: Scenario 2-------------->
     @Test
     public void C_MissingPasswordFieldsTest() {
         onView(withId(R.id.login_email)).perform(typeText("admin@gmail.com"), ViewActions.closeSoftKeyboard()); // type password
@@ -50,5 +52,11 @@ public class LoginActivityEspressoTest {
         intended(hasComponent("com.example.deerdiary.RegisterActivity"));
         Intents.release();
     }
-
+    //<-----Issue #2: Scenario 1-------------->
+    @Test
+    public void E_LoginTest(){
+        onView(withId(R.id.login_email)).perform(typeText("yifengzheng@duck.com"));
+        onView(withId(R.id.login_password)).perform(typeText("password"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.login_button)).perform(click());
+    }
 }
