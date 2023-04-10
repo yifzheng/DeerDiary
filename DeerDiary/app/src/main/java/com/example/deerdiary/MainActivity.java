@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
                 myAuth.signOut(); // sign out
                 startActivity(new Intent(MainActivity.this, StartActivity.class)); // move to start page
                 return true;
+            case R.id.menu_create_post:
+                startActivity(new Intent(MainActivity.this, CreatePostActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }
