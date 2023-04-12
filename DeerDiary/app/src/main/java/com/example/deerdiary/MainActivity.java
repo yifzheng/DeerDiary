@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, StartActivity.class)); // move to start page
                 return true;
             case R.id.menu_create_post:
-                startActivity(new Intent(MainActivity.this, CreatePostActivity.class));
+                startActivity(new Intent(MainActivity.this, CreatePostActivity.class)); //move to create post page
             default:
                 return super.onOptionsItemSelected(item);
         }
