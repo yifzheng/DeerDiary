@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth myAuth = FirebaseAuth.getInstance();
     private FirebaseUser currentUser;
+    public static Bundle currentUserInfo = new Bundle();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         currentUser = myAuth.getCurrentUser();
+        currentUserInfo.putString("userId", currentUser.getUid());
     }
 
     // function to display menu button
