@@ -3,6 +3,9 @@ package com.example.deerdiary;
 public class DiaryEntry {
     public String id, userId, title, content, dateTime;
 
+    public  DiaryEntry(){
+    }
+
     public DiaryEntry(String userId, String title, String content, String dateTime){
         this.userId = userId;
         this.title = title;
