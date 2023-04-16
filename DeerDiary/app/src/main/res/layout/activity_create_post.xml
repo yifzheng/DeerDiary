@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerHorizontal="false"
+    android:layout_centerVertical="false"
+    android:background="@color/background"
+    android:focusable="true"
+    android:scrollbars="vertical"
+    tools:context=".CreatePostActivity">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/createpost_title"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        app:boxBackgroundColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/createpost_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/createpost_title_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Title" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/createpost_content"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="30dp"
+        android:focusableInTouchMode="true"
+        android:gravity="start|top"
+        android:textAlignment="viewStart"
+        app:boxBackgroundColor="#FFFFFF"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createpost_title">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/createpost_content_field"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elegantTextHeight="false"
+            android:focusable="auto"
+            android:gravity="start|top"
+            android:hint="Start writing..." />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/createpost_buttons"
+        android:layout_width="300dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createpost_content">
+
+        <Button
+            android:id="@+id/createpost_discard_button"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:gravity="center"
+            android:text="DISCARD"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/createpost_create_button"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_weight="0.75"
+            android:gravity="center"
+            android:text="CREATE"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
