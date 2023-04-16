@@ -41,7 +41,12 @@ public class CreatePostActivity extends AppCompatActivity {
         final Button discardButton = findViewById(R.id.createpost_discard_button);
         contentField = findViewById(R.id.createpost_content_field);
         titleField = findViewById(R.id.createpost_title_field);
-        diaryEntries = MainActivity.currentUserInfo.getParcelableArrayList("diaryEntries");
+
+        try {
+            diaryEntries = MainActivity.currentUserInfo.getParcelableArrayList("diaryEntries");
+        } catch (Exception e){
+            System.out.println("Exception: " + e.getMessage());
+        }
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,13 +119,15 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
     public boolean doesTitleAlreadyExist(){
-        for (DiaryEntry entry : diaryEntries){
+        if (diaryEntries != null) {
+            for (DiaryEntry entry : diaryEntries) {
 
-            // look for any equivalent strings in titles of the current user's diaries
-            if (entry.getTitle().equals(titleField.getText().toString())) {
-                titleField.setError("Title already exists");
-                titleField.requestFocus();
-                return true;
+                // look for any equivalent strings in titles of the current user's diaries
+                if (entry.getTitle().equals(titleField.getText().toString())) {
+                    titleField.setError("Title already exists");
+                    titleField.requestFocus();
+                    return true;
+                }
             }
         }
 
