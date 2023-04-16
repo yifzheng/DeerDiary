@@ -20,6 +20,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
+import java.util.Random;
+
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(AndroidJUnit4.class)
 public class CreatePostActivityExpressoTest {
@@ -64,7 +66,20 @@ public class CreatePostActivityExpressoTest {
     //<-----Issue #8: Scenario 2-------------->
     @Test
     public void E_DuplicateTitleTest(){
-        onView(withId(R.id.createpost_title_field)).perform(typeText("Title name"));
+
+        // Create a random long number to be the title
+        String randomText = Long.toString(new Random().nextLong());
+
+        // Creating the diary for the first time with randomText as title
+        onView(withId(R.id.createpost_title_field)).perform(typeText(randomText));
+        onView(withId(R.id.createpost_content_field)).perform(typeText("Content body"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.createpost_create_button)).perform(click());
+
+        // Going back to create post activity
+        onView(withId(R.id.menu_create_post)).perform(click());
+
+        // Creating the diary for the second with the same title
+        onView(withId(R.id.createpost_title_field)).perform(typeText(randomText));
         onView(withId(R.id.createpost_content_field)).perform(typeText("Content body"), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.createpost_create_button)).perform(click());
         onView(withId(R.id.createpost_title_field)).check(matches(hasErrorText("Title already exists")));

@@ -33,21 +33,21 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference diaryRef = db.collection("diaryEntry");
-    public static Bundle currentUserInfo = new Bundle();
+    public static Bundle currentUserInfo = new Bundle(); // relevant user data to be easily accessed in other activities
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        retrieveDiaryData();
     }
 
     @Override
     protected void onStart(){
         super.onStart();
+
         currentUser = myAuth.getCurrentUser();
         currentUserInfo.putString("userId", currentUser.getUid());
+        retrieveDiaryData();
     }
 
     // function to display menu button
@@ -77,23 +77,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void retrieveDiaryData(){
-        diaryRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+
+        // Retrieve all the diaries where the userId of DiaryEntry objects in diaryRef matches the current userId
+        diaryRef.whereEqualTo("userId", currentUserInfo.getString("userId")).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 ArrayList<DiaryEntry> diaryEntries = new ArrayList<>();
 
+                // Loop through all the retrieved documents
                 for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
                 {
+                    // Convert the retrieved document back to a DiaryEntry object
                     DiaryEntry diaryEntry = documentSnapshot.toObject(DiaryEntry.class);
                     diaryEntries.add(diaryEntry);
                 }
 
+                // Stored in a bundle as a parcel for easy access in other activities
                 currentUserInfo.putParcelableArrayList("diaryEntries", diaryEntries);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                Toast.makeText(MainActivity.this, "Failed to retrieve diaries: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

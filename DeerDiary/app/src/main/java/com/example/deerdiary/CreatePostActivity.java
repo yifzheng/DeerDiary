@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -27,9 +28,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference diaryRef = db.collection("diaryEntry");
-    public TextInputEditText contentField;
-    public TextInputEditText titleField;
-    public ArrayList<DiaryEntry> diaryEntries;
+    private TextInputEditText contentField;
+    private TextInputEditText titleField;
+    private ArrayList<DiaryEntry> diaryEntries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +115,8 @@ public class CreatePostActivity extends AppCompatActivity {
 
     public boolean doesTitleAlreadyExist(){
         for (DiaryEntry entry : diaryEntries){
+
+            // look for any equivalent strings in titles of the current user's diaries
             if (entry.getTitle().equals(titleField.getText().toString())) {
                 titleField.setError("Title already exists");
                 titleField.requestFocus();
