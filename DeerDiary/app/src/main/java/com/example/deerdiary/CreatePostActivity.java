@@ -19,6 +19,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -28,6 +29,7 @@ public class CreatePostActivity extends AppCompatActivity {
     private final CollectionReference diaryRef = db.collection("diaryEntry");
     public TextInputEditText contentField;
     public TextInputEditText titleField;
+    public ArrayList<DiaryEntry> diaryEntries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,8 @@ public class CreatePostActivity extends AppCompatActivity {
         final Button discardButton = findViewById(R.id.createpost_discard_button);
         contentField = findViewById(R.id.createpost_content_field);
         titleField = findViewById(R.id.createpost_title_field);
+        diaryEntries = MainActivity.currentUserInfo.getParcelableArrayList("diaryEntries");
+        System.out.println(diaryEntries);
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override

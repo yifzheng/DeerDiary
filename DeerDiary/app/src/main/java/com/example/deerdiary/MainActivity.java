@@ -20,7 +20,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -28,12 +31,16 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth myAuth = FirebaseAuth.getInstance();
     private FirebaseUser currentUser;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final CollectionReference diaryRef = db.collection("diaryEntry");
     public static Bundle currentUserInfo = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        retrieveDiaryData();
     }
 
     @Override
@@ -67,5 +74,27 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void retrieveDiaryData(){
+        diaryRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                ArrayList<DiaryEntry> diaryEntries = new ArrayList<>();
+
+                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
+                {
+                    DiaryEntry diaryEntry = documentSnapshot.toObject(DiaryEntry.class);
+                    diaryEntries.add(diaryEntry);
+                }
+
+                currentUserInfo.putParcelableArrayList("diaryEntries", diaryEntries);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
     }
 }
