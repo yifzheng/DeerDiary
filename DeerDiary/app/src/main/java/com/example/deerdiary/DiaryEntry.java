@@ -1,6 +1,11 @@
 package com.example.deerdiary;
 
-public class DiaryEntry {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class DiaryEntry implements Parcelable {
     public String id, userId, title, content, dateTime;
 
     public  DiaryEntry(){
@@ -13,9 +18,36 @@ public class DiaryEntry {
         this.dateTime = dateTime;
     }
 
-    public String getId() { return id; }
+    // deserialize from parcel
+    protected DiaryEntry(Parcel in) {
+        super();
+        id = in.readString();
+        userId = in.readString();
+        title = in.readString();
+        content = in.readString();
+        dateTime = in.readString();
+    }
 
-    public void setId(String id) { this.id = id; }
+    // create DiaryEntry objects from parcel
+    public static final Creator<DiaryEntry> CREATOR = new Creator<DiaryEntry>() {
+        @Override
+        public DiaryEntry createFromParcel(Parcel in) {
+            return new DiaryEntry(in);
+        }
+
+        @Override
+        public DiaryEntry[] newArray(int size) {
+            return new DiaryEntry[size];
+        }
+    };
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUserId() {
         return userId;
@@ -47,5 +79,20 @@ public class DiaryEntry {
 
     public void setDateTime(String dateTime){
         this.dateTime = dateTime;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // writing to parcel
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(userId);
+        dest.writeString(title);
+        dest.writeString(content);
+        dest.writeString(dateTime);
     }
 }
