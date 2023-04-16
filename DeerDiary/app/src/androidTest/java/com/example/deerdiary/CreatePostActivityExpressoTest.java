@@ -7,6 +7,8 @@ import static androidx.test.espresso.assertion.ViewAssertions.*;
 import static androidx.test.espresso.intent.Intents.*;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.*;
 
+import android.content.Intent;
+
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.espresso.action.ViewActions;
@@ -57,5 +59,14 @@ public class CreatePostActivityExpressoTest {
         onView(withId(R.id.createpost_discard_button)).perform(click());
         intended(hasComponent("com.example.deerdiary.MainActivity"));
         Intents.release();
+    }
+
+    //<-----Issue #8: Scenario 2-------------->
+    @Test
+    public void E_DuplicateTitleTest(){
+        onView(withId(R.id.createpost_title_field)).perform(typeText("Title name"));
+        onView(withId(R.id.createpost_content_field)).perform(typeText("Content body"), ViewActions.closeSoftKeyboard());
+        onView(withId(R.id.createpost_create_button)).perform(click());
+        onView(withId(R.id.createpost_title_field)).check(matches(hasErrorText("Title already exists")));
     }
 }

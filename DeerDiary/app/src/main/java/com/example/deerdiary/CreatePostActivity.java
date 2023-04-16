@@ -41,7 +41,6 @@ public class CreatePostActivity extends AppCompatActivity {
         contentField = findViewById(R.id.createpost_content_field);
         titleField = findViewById(R.id.createpost_title_field);
         diaryEntries = MainActivity.currentUserInfo.getParcelableArrayList("diaryEntries");
-        System.out.println(diaryEntries);
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +52,7 @@ public class CreatePostActivity extends AppCompatActivity {
         discardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CreatePostActivity.this, StartActivity.class));
+                startActivity(new Intent(CreatePostActivity.this, MainActivity.class));
             }
         });
     }
@@ -63,7 +62,7 @@ public class CreatePostActivity extends AppCompatActivity {
         String userId, titleValue, contentValue, dateTime;
 
         try {
-            if (areFieldsPopulated()) {
+            if (areFieldsPopulated() && !doesTitleAlreadyExist()) {
 
                 // retrieve current user id from MainActivity
                 userId = MainActivity.currentUserInfo.getString("userId");
@@ -111,6 +110,18 @@ public class CreatePostActivity extends AppCompatActivity {
         } else {
             return true;
         }
+    }
+
+    public boolean doesTitleAlreadyExist(){
+        for (DiaryEntry entry : diaryEntries){
+            if (entry.getTitle().equals(titleField.getText().toString())) {
+                titleField.setError("Title already exists");
+                titleField.requestFocus();
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void quickMakeText(String text){
