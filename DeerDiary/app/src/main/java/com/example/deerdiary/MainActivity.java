@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     // Convert the retrieved document back to a DiaryEntry object
                     DiaryEntry diaryEntry = documentSnapshot.toObject(DiaryEntry.class);
+                    diaryEntry.setId(documentSnapshot.getId()); // set the id of the current diary entry so we have access when we want to edit or delete it
                     diaryEntries.add(diaryEntry);
                 }
 
