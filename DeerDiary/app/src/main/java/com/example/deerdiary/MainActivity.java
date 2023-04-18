@@ -21,8 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -67,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         adapter = new Adapter(MainActivity.this, entries);
 
         recyclerView.setAdapter(adapter);
-        EvenChangeListener();
     }
     private void EvenChangeListener() {
         //Retrieve All the documents where the userId field matches the current userId
@@ -101,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         currentUser = myAuth.getCurrentUser();
         currentUserInfo.putString("userId", currentUser.getUid());
+        EvenChangeListener();
         retrieveDiaryData();
     }
 
