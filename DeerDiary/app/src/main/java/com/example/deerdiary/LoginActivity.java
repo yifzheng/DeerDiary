@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
             activityLoginBinding.loginPassword.setError("Password cannot be empty");
             activityLoginBinding.loginPassword.requestFocus();
         } else {
-            // signin with email and password
+            // sign in with email and password
             myAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 // if successful
                 @Override
