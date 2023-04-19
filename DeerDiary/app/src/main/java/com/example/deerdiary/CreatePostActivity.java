@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -15,6 +18,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,6 +31,7 @@ import java.util.Locale;
 public class CreatePostActivity extends AppCompatActivity {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth myAuth = FirebaseAuth.getInstance();
     private final CollectionReference diaryRef = db.collection("diaryEntry");
     private TextInputEditText contentField;
     private TextInputEditText titleField;
@@ -61,6 +66,32 @@ public class CreatePostActivity extends AppCompatActivity {
                 startActivity(new Intent(CreatePostActivity.this, MainActivity.class));
             }
         });
+    }
+
+    // function to display menu button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    // handle icons clicked on menu bar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_profile:
+                Toast.makeText(this, "clicking profile icon", Toast.LENGTH_SHORT).show();
+                return true; // have not created profile activity yet
+            case R.id.menu_logout:
+                myAuth.signOut(); // sign out
+                startActivity(new Intent(CreatePostActivity.this, StartActivity.class)); // move to start page
+                return true;
+            case R.id.menu_create_post:
+                startActivity(new Intent(CreatePostActivity.this, CreatePostActivity.class)); //move to create post page
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void createNewEntry(){
