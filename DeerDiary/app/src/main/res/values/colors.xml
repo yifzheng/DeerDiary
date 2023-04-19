@@ -13,9 +13,6 @@
     <color name="green_100">#8BC552</color>
     <color name="magenta_100">#C552B9</color>
     <color name="error">#ff2424</color>
-<<<<<<< HEAD
     <color name="bagel">#ECB664</color>
-=======
     <color name="card_color">#ECB664</color>
->>>>>>> 9e6bf8ad2327f954b3f2242bdbc12da3fd4cb577
 </resources>
