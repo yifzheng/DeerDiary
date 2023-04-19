@@ -8,6 +8,7 @@ import static androidx.test.espresso.intent.Intents.*;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.*;
 
 import android.content.Intent;
+import android.os.SystemClock;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
@@ -75,6 +76,9 @@ public class CreatePostActivityExpressoTest {
         onView(withId(R.id.createpost_title_field)).perform(typeText(randomText));
         onView(withId(R.id.createpost_content_field)).perform(typeText("Content body"), ViewActions.closeSoftKeyboard());
         onView(withId(R.id.createpost_create_button)).perform(click());
+
+        // Pause the test for 100 ms to ensure the elements are loaded
+        SystemClock.sleep(100);
 
         // Going back to create post activity
         onView(withId(R.id.menu_create_post)).perform(click());
