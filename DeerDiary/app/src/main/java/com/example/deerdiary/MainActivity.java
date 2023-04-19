@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
-
+                    entries.clear();
                     // Loop through all the retrieved documents
                     for(QueryDocumentSnapshot doc : task.getResult()){
                         DiaryEntry diaryEntry = doc.toObject(DiaryEntry.class);
