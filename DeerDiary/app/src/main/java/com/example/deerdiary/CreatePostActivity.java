@@ -68,31 +68,31 @@ public class CreatePostActivity extends AppCompatActivity {
         });
     }
 
-//    // function to display menu button
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater menuInflater = getMenuInflater();
-//        menuInflater.inflate(R.menu.menu, menu);
-//        return true;
-//    }
-//
-//    // handle icons clicked on menu bar
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.menu_profile:
-//                Toast.makeText(this, "clicking profile icon", Toast.LENGTH_SHORT).show();
-//                return true; // have not created profile activity yet
-//            case R.id.menu_logout:
-//                myAuth.signOut(); // sign out
-//                startActivity(new Intent(CreatePostActivity.this, StartActivity.class)); // move to start page
-//                return true;
-//            case R.id.menu_create_post:
-//                startActivity(new Intent(CreatePostActivity.this, CreatePostActivity.class)); //move to create post page
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
+    // function to display menu button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    // handle icons clicked on menu bar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_profile:
+                Toast.makeText(this, "clicking profile icon", Toast.LENGTH_SHORT).show();
+                return true; // have not created profile activity yet
+            case R.id.menu_logout:
+                myAuth.signOut(); // sign out
+                startActivity(new Intent(CreatePostActivity.this, StartActivity.class)); // move to start page
+                return true;
+            case R.id.menu_create_post:
+                startActivity(new Intent(CreatePostActivity.this, CreatePostActivity.class)); //move to create post page
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     public void createNewEntry(){
         DiaryEntry newEntry = null;
