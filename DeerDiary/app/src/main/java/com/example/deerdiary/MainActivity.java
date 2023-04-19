@@ -21,9 +21,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+
 import com.google.android.gms.tasks.OnCompleteListener;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         currentUser = myAuth.getCurrentUser();
         currentUserInfo.putString("userId", currentUser.getUid());
+
         retrieveDiaryData();
     }
 
