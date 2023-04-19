@@ -23,8 +23,10 @@ import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -35,6 +37,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         recyclerView =findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize((true));
@@ -67,33 +71,8 @@ public class MainActivity extends AppCompatActivity {
         adapter = new Adapter(MainActivity.this, entries);
 
         recyclerView.setAdapter(adapter);
-        EvenChangeListener();
     }
-    private void EvenChangeListener() {
-        //Retrieve All the documents where the userId field matches the current userId
-        db.collection("diaryEntry").whereEqualTo("userId",currentUserInfo.getString("userId"))
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                        if(error !=null){
-                            Log.e("Firestore error", error.getMessage());
-                            return;
-                        }
-
-                        for (DocumentChange dc:value.getDocumentChanges()){
-
-                            if(dc.getType() == DocumentChange.Type.ADDED){
-
-                                entries.add(dc.getDocument().toObject(DiaryEntry.class));
-                            }
-
-                            adapter.notifyDataSetChanged();
-
-                        }
-                    }
-                });
-    }
 
     @Override
     protected void onStart(){
@@ -131,31 +110,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void retrieveDiaryData(){
-
         // Retrieve all the diaries where the userId of DiaryEntry objects in diaryRef matches the current userId
-        diaryRef.whereEqualTo("userId", currentUserInfo.getString("userId")).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        Query query = diaryRef.whereEqualTo("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                ArrayList<DiaryEntry> diaryEntries = new ArrayList<>();
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
 
-                // Loop through all the retrieved documents
-                for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments())
-                {
-                    // Convert the retrieved document back to a DiaryEntry object
-                    DiaryEntry diaryEntry = documentSnapshot.toObject(DiaryEntry.class);
-                    diaryEntry.setId(documentSnapshot.getId()); // set the id of the current diary entry so we have access when we want to edit or delete it
-                    diaryEntries.add(diaryEntry);
+                    // Loop through all the retrieved documents
+                    for(QueryDocumentSnapshot doc : task.getResult()){
+                        DiaryEntry diaryEntry = doc.toObject(DiaryEntry.class);
+                        diaryEntry.setId(doc.getId());
+                        entries.add(diaryEntry);
+                    }
+                    //Notify any registered observers that the data set has changed.
+                    adapter.notifyDataSetChanged();
+                    // Stored in a bundle as a parcel for easy access in other activities
+                    currentUserInfo.putParcelableArrayList("diaryEntries", entries);
+
                 }
 
-                // Stored in a bundle as a parcel for easy access in other activities
-                currentUserInfo.putParcelableArrayList("diaryEntries", diaryEntries);
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MainActivity.this, "Failed to retrieve diaries: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 }
