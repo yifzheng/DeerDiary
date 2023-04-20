@@ -34,9 +34,10 @@ Mitigation: conduct thorough testing and QA
 | [User login](https://github.com/cunychenhclass/cisc3171proj-group6/issues/2) | 5 | yes |
 | [User Registration](https://github.com/cunychenhclass/cisc3171proj-group6/issues/1) | 5 | yes |
 | [Create a diary entry](https://github.com/cunychenhclass/cisc3171proj-group6/issues/8) | 5| yes |
+| [View Diary Entry](https://github.com/cunychenhclass/cisc3171proj-group6/issues/16) | 5 | yes |
 | [Sorting list of entries](https://github.com/cunychenhclass/cisc3171proj-group6/issues/5) | 2 | N/A |
 
-### Iteration Velocity = 3 issues * 5 points = 15
-### Weekly Velocity = 15 / 2 weeks = 7.5
+### Iteration Velocity = 4 issues * 5 points = 20
+### Weekly Velocity = 20 / 2 weeks = 10 points
 ## Reflection
 - TBA
