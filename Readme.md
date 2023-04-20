@@ -27,3 +27,16 @@ Each post has a due date and we can create an alert when the task has not been c
 ## Risks and Mitigation description ... 
 Risk: Technical issues such as bugs, crashes or compatibility issues
 Mitigation: conduct thorough testing and QA
+
+# Iteration #1: 2 weeks
+| Issues | Points | Completed |
+| :---: | :---: | :---: |
+| [User login](https://github.com/cunychenhclass/cisc3171proj-group6/issues/2) | 5 | yes |
+| [User Registration](https://github.com/cunychenhclass/cisc3171proj-group6/issues/1) | 5 | yes |
+| [Create a diary entry](https://github.com/cunychenhclass/cisc3171proj-group6/issues/8) | 5| yes |
+| [Sorting list of entries](https://github.com/cunychenhclass/cisc3171proj-group6/issues/5) | 2 | N/A |
+
+### Iteration Velocity = 3 issues * 5 points = 15
+### Weekly Velocity = 15 / 2 weeks = 7.5
+## Reflection
+- TBA
