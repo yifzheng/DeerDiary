@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements RecycleViewInterface{
 
     private FirebaseAuth myAuth = FirebaseAuth.getInstance();
     private FirebaseUser currentUser;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize((true));
 
         entries= new ArrayList<DiaryEntry>();
-        adapter = new Adapter(MainActivity.this, entries);
+        adapter = new Adapter(MainActivity.this, entries, this);
 
         recyclerView.setAdapter(adapter);
     }
@@ -134,5 +134,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+    //handle click on the entries list
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(MainActivity.this,EditPostActivity.class);
+        //for now I pass them as individual, later will pass it as objects
+
+        intent.putExtra("DATE",entries.get(position).dateTime);
+        intent.putExtra("TITLE",entries.get(position).title);
+        intent.putExtra("CONTENT",entries.get(position).content);
+
+        startActivity(intent);
     }
 }

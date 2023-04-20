@@ -12,6 +12,9 @@
         android:theme="@style/Theme.DeerDiary"
         tools:targetApi="31">
         <activity
+            android:name=".EditPostActivity"
+            android:exported="false" />
+        <activity
             android:name=".CreatePostActivity"
             android:exported="false" />
         <activity
