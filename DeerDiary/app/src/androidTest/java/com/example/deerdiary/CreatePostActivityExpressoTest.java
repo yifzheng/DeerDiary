@@ -78,7 +78,7 @@ public class CreatePostActivityExpressoTest {
         onView(withId(R.id.createpost_create_button)).perform(click());
 
         // Pause the test for 100 ms to ensure the elements are loaded
-        SystemClock.sleep(100);
+        SystemClock.sleep(1000);
 
         // Going back to create post activity
         onView(withId(R.id.menu_create_post)).perform(click());
