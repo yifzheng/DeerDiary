@@ -14,11 +14,12 @@
         android:layout_height="250dp"
         android:layout_centerHorizontal="true"
         app:srcCompat="@mipmap/ic_profile"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
         />
 
     <TextView
+        android:id="@+id/user_profile_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="serif-monospace"
@@ -27,14 +28,14 @@
         android:textColor="#D84315"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:layout_marginTop="340dp"/>
+        android:layout_marginTop="320dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:textAlignment="center"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="380dp"
         android:padding="10dp">
         <TextView
             android:layout_width="wrap_content"
@@ -62,7 +63,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:textAlignment="center"
-        android:layout_marginTop="490dp"
+        android:layout_marginTop="470dp"
         android:padding="10dp">
         <TextView
             android:layout_width="wrap_content"
