@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements RecycleViewInterf
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_profile:
-                Toast.makeText(this, "clicking profile icon", Toast.LENGTH_SHORT).show();
-                return true; // have not created profile activity yet
+                startActivity(new Intent(MainActivity.this, ViewUserProfile.class));
+                return true;
             case R.id.menu_logout:
                 myAuth.signOut(); // sign out
                 startActivity(new Intent(MainActivity.this, StartActivity.class)); // move to start page
