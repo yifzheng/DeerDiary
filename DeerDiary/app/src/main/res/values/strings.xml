@@ -16,4 +16,5 @@
     <string name="create_post">Create Post</string>
     <string name="edit">Edit</string>
     <string name="return_to_menu">Return</string>
+    <string name="name_placeholder">LastName, FirstName</string>
 </resources>

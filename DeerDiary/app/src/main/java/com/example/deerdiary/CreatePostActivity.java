@@ -81,7 +81,7 @@ public class CreatePostActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_profile:
-                Toast.makeText(this, "clicking profile icon", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(CreatePostActivity.this, ViewUserProfile.class));
                 return true; // have not created profile activity yet
             case R.id.menu_logout:
                 myAuth.signOut(); // sign out
