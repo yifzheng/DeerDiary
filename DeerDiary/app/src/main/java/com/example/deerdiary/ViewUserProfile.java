@@ -1,14 +1,14 @@
 package com.example.deerdiary;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.deerdiary.databinding.ActivityViewUserProfileBinding;
@@ -22,10 +22,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
 public class ViewUserProfile extends AppCompatActivity {
     private static final String FILE_EXTENSION = ".jpg";
     private static final String FOLDER_NAME = "images";
@@ -36,7 +32,7 @@ public class ViewUserProfile extends AppCompatActivity {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference imageRef = storage.getReference().child(FOLDER_NAME);
     private ActivityViewUserProfileBinding activityViewUserProfileBinding;
-    private ArrayList<DiaryEntry> diaryEntries;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +56,7 @@ public class ViewUserProfile extends AppCompatActivity {
     // handle icons clicked on menu bar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_profile:
                 Toast.makeText(this, "clicking user profile icon", Toast.LENGTH_SHORT).show();
                 return true; // have not created profile activity yet
@@ -76,40 +72,30 @@ public class ViewUserProfile extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
-        String userId = MainActivity.currentUserInfo.getString("userId");
-        diaryEntries = MainActivity.currentUserInfo.getParcelableArrayList("diaryEntries");
-        int size = diaryEntries.size();
+        FirebaseUser currentUser = myAuth.getCurrentUser();
+        String userId = currentUser.getUid();
+        int size = MainActivity.currentUserInfo.getInt("entryCount");
+
         userRef.document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful())
-                {
+                if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    if (document.exists())
-                    {
+                    if (document.exists()) {
                         User user = document.toObject(User.class);
                         activityViewUserProfileBinding.userProfileName.setText(user.getLastName() + ", " + user.getFirstName());
                         activityViewUserProfileBinding.userProfileEmail.setText(user.getEmail());
-                        if (diaryEntries != null)
-                        {
-                            activityViewUserProfileBinding.userProfileEntriesCount.setText(Integer.toString(size));
-                        }
-                        else
-                        {
-                            activityViewUserProfileBinding.userProfileEntriesCount.setText("0");
-                        }
-                        if (user.getImageURL() != null)
-                        {
+                        activityViewUserProfileBinding.userProfileEntriesCount.setText(Integer.toString(size));
+                        if (user.getImageURL() != null) {
                             imageRef.child(user.getImageURL() + FILE_EXTENSION).getDownloadUrl().addOnSuccessListener(uri -> {
-                               Glide.with(ViewUserProfile.this).load(uri).into(activityViewUserProfileBinding.userProfileImg);
+                                Glide.with(ViewUserProfile.this).load(uri).into(activityViewUserProfileBinding.userProfileImg);
                             }).addOnFailureListener(e -> {
                                 Toast.makeText(ViewUserProfile.this, "Error loading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            });;
-                        }
-                        else
-                        {
+                            });
+                            ;
+                        } else {
                             activityViewUserProfileBinding.userProfileImg.setImageResource(R.mipmap.ic_profile);
                         }
                     }
