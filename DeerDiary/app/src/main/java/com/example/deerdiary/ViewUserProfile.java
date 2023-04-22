@@ -50,7 +50,7 @@ public class ViewUserProfile extends AppCompatActivity {
             Intent intent = new Intent(ViewUserProfile.this, EditUserProfile.class);
             intent.putExtra(USER_UID, myAuth.getCurrentUser().getUid());
             intent.putExtra(FIRST_NAME, user.getFirstName());
-            intent.putExtra(LAST_NAME, user.getFirstName());
+            intent.putExtra(LAST_NAME, user.getLastName());
             intent.putExtra(IMAGE_URI, user.getImageURL());
             startActivity(intent);
         });

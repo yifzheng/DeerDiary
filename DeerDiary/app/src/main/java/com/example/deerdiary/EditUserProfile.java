@@ -20,19 +20,23 @@ public class EditUserProfile extends AppCompatActivity {
     private static final String LAST_NAME = "lastName";
     private static final String IMAGE_URI = "imageURI";
 
-    private ActivityEditUserProfileBinding editUserProfileBinding;
+    private ActivityEditUserProfileBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        editUserProfileBinding = ActivityEditUserProfileBinding.inflate(getLayoutInflater());
-        setContentView(editUserProfileBinding.getRoot());
+        binding = ActivityEditUserProfileBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         Bundle extras = getIntent().getExtras();
         String firstName = extras.getString(FIRST_NAME);
         String lastName = extras.getString(LAST_NAME);
         String userUID = extras.getString(USER_UID);
         String imageURI = extras.getString(IMAGE_URI);
+
+        // <---- Load information into necessary fields ------------>
+        binding.editUserFirstName.setText(firstName);
+        binding.editUserLastName.setText(lastName);
     }
 
     // function to display menu button
