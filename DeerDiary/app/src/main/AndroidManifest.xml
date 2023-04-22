@@ -12,6 +12,9 @@
         android:theme="@style/Theme.DeerDiary"
         tools:targetApi="31">
         <activity
+            android:name=".EditUserProfile"
+            android:exported="false" />
+        <activity
             android:name=".ViewUserProfile"
             android:exported="false" />
         <activity

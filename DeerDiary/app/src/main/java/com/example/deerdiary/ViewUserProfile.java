@@ -25,6 +25,10 @@ import com.google.firebase.storage.StorageReference;
 public class ViewUserProfile extends AppCompatActivity {
     private static final String FILE_EXTENSION = ".jpg";
     private static final String FOLDER_NAME = "images";
+    private static final String USER_UID = "userUID";
+    private static final String FIRST_NAME = "firstName";
+    private static final String LAST_NAME = "lastName";
+    private static final String IMAGE_URI = "imageURI";
 
     private FirebaseAuth myAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -32,6 +36,9 @@ public class ViewUserProfile extends AppCompatActivity {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference imageRef = storage.getReference().child(FOLDER_NAME);
     private ActivityViewUserProfileBinding activityViewUserProfileBinding;
+    private User user;
+
+    private static Bundle userObj = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +46,14 @@ public class ViewUserProfile extends AppCompatActivity {
         activityViewUserProfileBinding = ActivityViewUserProfileBinding.inflate(getLayoutInflater());
         setContentView(activityViewUserProfileBinding.getRoot());
 
-        activityViewUserProfileBinding.userProfileEditBtn.setOnClickListener(view -> Toast.makeText(this, "edit user profile", Toast.LENGTH_SHORT).show());
+        activityViewUserProfileBinding.userProfileEditBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(ViewUserProfile.this, EditUserProfile.class);
+            intent.putExtra(USER_UID, myAuth.getCurrentUser().getUid());
+            intent.putExtra(FIRST_NAME, user.getFirstName());
+            intent.putExtra(LAST_NAME, user.getFirstName());
+            intent.putExtra(IMAGE_URI, user.getImageURL());
+            startActivity(intent);
+        });
         activityViewUserProfileBinding.userProfileHomeBtn.setOnClickListener(view -> {
             startActivity(new Intent(ViewUserProfile.this, MainActivity.class));
         });
@@ -57,8 +71,11 @@ public class ViewUserProfile extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_home:
+                startActivity(new Intent(ViewUserProfile.this, MainActivity.class));
+                return true;
             case R.id.menu_profile:
-                Toast.makeText(this, "clicking user profile icon", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(ViewUserProfile.this, ViewUserProfile.class));
                 return true; // have not created profile activity yet
             case R.id.menu_logout:
                 myAuth.signOut(); // sign out
@@ -84,7 +101,7 @@ public class ViewUserProfile extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        User user = document.toObject(User.class);
+                        user = document.toObject(User.class);
                         activityViewUserProfileBinding.userProfileName.setText(user.getLastName() + ", " + user.getFirstName());
                         activityViewUserProfileBinding.userProfileEmail.setText(user.getEmail());
                         activityViewUserProfileBinding.userProfileEntriesCount.setText(Integer.toString(size));

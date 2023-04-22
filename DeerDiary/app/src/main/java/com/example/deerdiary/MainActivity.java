@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements RecycleViewInterf
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.menu_home:
+                return true;
             case R.id.menu_profile:
                 startActivity(new Intent(MainActivity.this, ViewUserProfile.class));
                 return true;
