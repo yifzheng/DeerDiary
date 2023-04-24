@@ -37,6 +37,8 @@ public class CreatePostActivity extends AppCompatActivity {
     private TextInputEditText titleField;
     private ArrayList<DiaryEntry> diaryEntries;
 
+    FormValidation validation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
         try {
             diaryEntries = MainActivity.currentUserInfo.getParcelableArrayList("diaryEntries");
+            validation = new FormValidation(titleField,contentField,diaryEntries);
         } catch (Exception e){
             System.out.println("Exception: " + e.getMessage());
         }
@@ -99,7 +102,7 @@ public class CreatePostActivity extends AppCompatActivity {
         String userId, titleValue, contentValue, dateTime;
 
         try {
-            if (areFieldsPopulated() && !doesTitleAlreadyExist()) {
+            if (validation.areFieldsPopulated() && !validation.doesTitleAlreadyExist()) {
 
                 // retrieve current user id from MainActivity
                 userId = MainActivity.currentUserInfo.getString("userId");
@@ -133,36 +136,6 @@ public class CreatePostActivity extends AppCompatActivity {
         } else {
             quickMakeText("Failed to create a new diary entry: new entry was never initialized");
         }
-    }
-
-    public boolean areFieldsPopulated() {
-        if (TextUtils.isEmpty(titleField.getText())){
-            titleField.setError("Title cannot be empty");
-            titleField.requestFocus();
-            return false;
-        } else if (TextUtils.isEmpty(contentField.getText())) {
-            contentField.setError("Content cannot be empty");
-            contentField.requestFocus();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public boolean doesTitleAlreadyExist(){
-        if (diaryEntries != null) {
-            for (DiaryEntry entry : diaryEntries) {
-
-                // look for any equivalent strings in titles of the current user's diaries
-                if (entry.getTitle().equals(titleField.getText().toString())) {
-                    titleField.setError("Title already exists");
-                    titleField.requestFocus();
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     public void quickMakeText(String text){
