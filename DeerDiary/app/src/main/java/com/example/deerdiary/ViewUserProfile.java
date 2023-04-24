@@ -111,7 +111,6 @@ public class ViewUserProfile extends AppCompatActivity {
                             }).addOnFailureListener(e -> {
                                 Toast.makeText(ViewUserProfile.this, "Error loading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             });
-                            ;
                         } else {
                             activityViewUserProfileBinding.userProfileImg.setImageResource(R.mipmap.ic_profile);
                         }

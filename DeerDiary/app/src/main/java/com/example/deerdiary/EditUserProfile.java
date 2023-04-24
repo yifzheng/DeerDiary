@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -53,7 +54,12 @@ public class EditUserProfile extends AppCompatActivity {
         String lastName = extras.getString(LAST_NAME);
         userUID = extras.getString(USER_UID);
         String imageURI = extras.getString(IMAGE_URI);
-
+        /*imageRef.child(imageURI).getDownloadUrl().addOnSuccessListener(uri -> {
+            Glide.with(EditUserProfile.this).load(uri).into(binding.userProfileImg);
+        }).addOnFailureListener(e -> {
+            Toast.makeText(EditUserProfile.this, "Error loading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
+*/
         // <---- Load information into necessary fields ------------>
         binding.editUserFirstName.setText(firstName);
         binding.editUserLastName.setText(lastName);
@@ -133,11 +139,22 @@ public class EditUserProfile extends AppCompatActivity {
         String lastName = binding.editUserLastName.getText().toString();
 
         Map<String, Object> user = new HashMap<>();
-        user.put(FIRST_NAME, firstName);
-        user.put(LAST_NAME, lastName);
-        user.put(IMAGE_URI, fileName);
+        if (!firstName.isEmpty())
+        {
+            user.put(FIRST_NAME, firstName);
+        }
+        else if (!lastName.isEmpty())
+        {
+            user.put(LAST_NAME, lastName);
+        }
+        else if (!fileName.isEmpty())
+        {
+            user.put(IMAGE_URI, fileName);
+        }
+
 
         userRef.document(userUID).update(user).addOnSuccessListener(unused -> {
+            SystemClock.sleep(1000);
             finish();
         }).addOnFailureListener(e -> {
             Toast.makeText(EditUserProfile.this, "Error Updating User: " + e.getMessage().toString(), Toast.LENGTH_SHORT).show();

@@ -1,5 +1,13 @@
 package com.example.deerdiary;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.*;
+import static androidx.test.espresso.assertion.ViewAssertions.*;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.*;
+
+import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -16,10 +24,23 @@ public class EditUserProfileEspressoTest {
     public ActivityScenarioRule<EditUserProfile> scenarioRule = new ActivityScenarioRule<EditUserProfile>(EditUserProfile.class);
 
     @Test
-    public void A_UIElementsDisplayedTest(){}
+    public void A_UIElementsDisplayedTest(){
+        onView(withId(R.id.edit_user_text)).check(matches(isDisplayed()));
+        onView(withId(R.id.user_profile_img)).check(matches(isDisplayed())); // check if UI is displayed
+        onView(withId(R.id.edit_user_pic_text)).check(matches(isDisplayed()));
+        onView(withId(R.id.edit_user_first_name)).check(matches(isDisplayed()));
+        onView(withId(R.id.edit_user_last_name)).check(matches(isDisplayed()));
+        onView(withId(R.id.save_profile_btn)).check(matches(isDisplayed()));
+        onView(withId(R.id.cancel_profile_btn)).check(matches(isDisplayed()));
+    }
 
     @Test
-    public void B_DiscardChangedTest(){}
+    public void B_DiscardChangedTest(){
+        Intents.init();
+        onView(withId(R.id.cancel_profile_btn)).perform(click());
+        intended(hasComponent("com.example.deerdiary.ViewUserProfile"));
+        Intents.release();
+    }
 
     @Test
     public void C_EditEntryTest(){}
