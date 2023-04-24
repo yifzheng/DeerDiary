@@ -8,16 +8,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
 
 public class ViewEntryActivity extends AppCompatActivity {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth myAuth = FirebaseAuth.getInstance();
+    private final CollectionReference diaryRef = db.collection("diaryEntry");
+    private FormValidation validation;
+    private ArrayList<DiaryEntry> diaryEntries;
+    private TextView dateField;
+    private TextView titleField;
+    private TextView contentField;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -30,9 +40,9 @@ public class ViewEntryActivity extends AppCompatActivity {
         String title = getIntent().getStringExtra("TITLE");
         String content = getIntent().getStringExtra("CONTENT");
 
-        TextView dateField = findViewById(R.id.datetimeView);
-        TextView titleField = findViewById(R.id.titleView);
-        TextView contentField = findViewById(R.id.contentView);
+        dateField = findViewById(R.id.datetimeView);
+        titleField = findViewById(R.id.titleView);
+        contentField = findViewById(R.id.contentView);
 
         dateField.setText(date.substring(0, 11));
         titleField.setText(title);
@@ -40,6 +50,13 @@ public class ViewEntryActivity extends AppCompatActivity {
 
         final Button returnBtn = (Button) findViewById(R.id.return_btn);
         final Button editBtn = (Button) findViewById(R.id.edit_btn);
+
+        try {
+            diaryEntries = MainActivity.currentUserInfo.getParcelableArrayList("diaryEntries");
+            validation = new FormValidation(titleField,contentField,diaryEntries);
+        } catch (Exception e){
+            System.out.println("Exception: " + e.getMessage());
+        }
 
         editBtn.setOnClickListener(view -> {
             editEntry();
@@ -72,7 +89,13 @@ public class ViewEntryActivity extends AppCompatActivity {
         }
     }
     public void editEntry(){
-
-        finish();
+        try{
+            finish();
+        }
+        catch (Exception e) {
+            String text = "Failed to edit existing diary fields: "+e.getMessage();
+            Toast.makeText(ViewEntryActivity.this,text, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+    }
     }
 }

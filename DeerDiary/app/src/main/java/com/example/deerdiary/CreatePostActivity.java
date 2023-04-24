@@ -36,8 +36,7 @@ public class CreatePostActivity extends AppCompatActivity {
     private TextInputEditText contentField;
     private TextInputEditText titleField;
     private ArrayList<DiaryEntry> diaryEntries;
-
-    FormValidation validation;
+    private FormValidation validation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
