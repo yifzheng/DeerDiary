@@ -106,7 +106,7 @@ public class ViewUserProfile extends AppCompatActivity {
                         activityViewUserProfileBinding.userProfileEmail.setText(user.getEmail());
                         activityViewUserProfileBinding.userProfileEntriesCount.setText(Integer.toString(size));
                         if (user.getImageURL() != null) {
-                            imageRef.child(user.getImageURL() + FILE_EXTENSION).getDownloadUrl().addOnSuccessListener(uri -> {
+                            imageRef.child(user.getImageURL()).getDownloadUrl().addOnSuccessListener(uri -> {
                                 Glide.with(ViewUserProfile.this).load(uri).into(activityViewUserProfileBinding.userProfileImg);
                             }).addOnFailureListener(e -> {
                                 Toast.makeText(ViewUserProfile.this, "Error loading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
