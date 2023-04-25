@@ -2,29 +2,34 @@ package com.example.deerdiary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.deerdiary.databinding.ActivityViewUserProfileBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 public class ViewUserProfile extends AppCompatActivity {
     private static final String FILE_EXTENSION = ".jpg";
     private static final String FOLDER_NAME = "images";
+    private static final String USER_UID = "userUID";
+    private static final String FIRST_NAME = "firstName";
+    private static final String LAST_NAME = "lastName";
+    private static final String IMAGE_URI = "imageURI";
 
     private FirebaseAuth myAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -32,6 +37,9 @@ public class ViewUserProfile extends AppCompatActivity {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference imageRef = storage.getReference().child(FOLDER_NAME);
     private ActivityViewUserProfileBinding activityViewUserProfileBinding;
+    private User user;
+
+    private static Bundle userObj = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +47,14 @@ public class ViewUserProfile extends AppCompatActivity {
         activityViewUserProfileBinding = ActivityViewUserProfileBinding.inflate(getLayoutInflater());
         setContentView(activityViewUserProfileBinding.getRoot());
 
-        activityViewUserProfileBinding.userProfileEditBtn.setOnClickListener(view -> Toast.makeText(this, "edit user profile", Toast.LENGTH_SHORT).show());
+        activityViewUserProfileBinding.userProfileEditBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(ViewUserProfile.this, EditUserProfile.class);
+            intent.putExtra(USER_UID, myAuth.getCurrentUser().getUid());
+            intent.putExtra(FIRST_NAME, user.getFirstName());
+            intent.putExtra(LAST_NAME, user.getLastName());
+            intent.putExtra(IMAGE_URI, user.getImageURL());
+            startActivity(intent);
+        });
         activityViewUserProfileBinding.userProfileHomeBtn.setOnClickListener(view -> {
             startActivity(new Intent(ViewUserProfile.this, MainActivity.class));
         });
@@ -57,8 +72,11 @@ public class ViewUserProfile extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_home:
+                startActivity(new Intent(ViewUserProfile.this, MainActivity.class));
+                return true;
             case R.id.menu_profile:
-                Toast.makeText(this, "clicking user profile icon", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(ViewUserProfile.this, ViewUserProfile.class));
                 return true; // have not created profile activity yet
             case R.id.menu_logout:
                 myAuth.signOut(); // sign out
@@ -78,23 +96,27 @@ public class ViewUserProfile extends AppCompatActivity {
         String userId = currentUser.getUid();
         int size = MainActivity.currentUserInfo.getInt("entryCount");
 
-        userRef.document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        userRef.document(userId).addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        User user = document.toObject(User.class);
-                        activityViewUserProfileBinding.userProfileName.setText(user.getLastName() + ", " + user.getFirstName());
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null)
+                {
+                    Log.d("VIEW_USER_PROFILE", error.toString());
+                }
+                else
+                {
+                    if (value.exists())
+                    {
+                        user = value.toObject(User.class);
+                        activityViewUserProfileBinding.userProfileName.setText(user.getFirstName() + " " + user.getLastName());
                         activityViewUserProfileBinding.userProfileEmail.setText(user.getEmail());
                         activityViewUserProfileBinding.userProfileEntriesCount.setText(Integer.toString(size));
                         if (user.getImageURL() != null) {
-                            imageRef.child(user.getImageURL() + FILE_EXTENSION).getDownloadUrl().addOnSuccessListener(uri -> {
+                            imageRef.child(user.getImageURL()).getDownloadUrl().addOnSuccessListener(uri -> {
                                 Glide.with(ViewUserProfile.this).load(uri).into(activityViewUserProfileBinding.userProfileImg);
                             }).addOnFailureListener(e -> {
                                 Toast.makeText(ViewUserProfile.this, "Error loading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                             });
-                            ;
                         } else {
                             activityViewUserProfileBinding.userProfileImg.setImageResource(R.mipmap.ic_profile);
                         }
@@ -102,5 +124,28 @@ public class ViewUserProfile extends AppCompatActivity {
                 }
             }
         });
+        /*addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        user = document.toObject(User.class);
+                        activityViewUserProfileBinding.userProfileName.setText(user.getLastName() + ", " + user.getFirstName());
+                        activityViewUserProfileBinding.userProfileEmail.setText(user.getEmail());
+                        activityViewUserProfileBinding.userProfileEntriesCount.setText(Integer.toString(size));
+                        if (user.getImageURL() != null) {
+                            imageRef.child(user.getImageURL()).getDownloadUrl().addOnSuccessListener(uri -> {
+                                Glide.with(ViewUserProfile.this).load(uri).into(activityViewUserProfileBinding.userProfileImg);
+                            }).addOnFailureListener(e -> {
+                                Toast.makeText(ViewUserProfile.this, "Error loading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                        } else {
+                            activityViewUserProfileBinding.userProfileImg.setImageResource(R.mipmap.ic_profile);
+                        }
+                    }
+                }
+            }
+        })*/
     }
 }
