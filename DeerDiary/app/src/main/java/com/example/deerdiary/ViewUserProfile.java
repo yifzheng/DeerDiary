@@ -2,23 +2,24 @@ package com.example.deerdiary;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.deerdiary.databinding.ActivityViewUserProfileBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -95,7 +96,35 @@ public class ViewUserProfile extends AppCompatActivity {
         String userId = currentUser.getUid();
         int size = MainActivity.currentUserInfo.getInt("entryCount");
 
-        userRef.document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        userRef.document(userId).addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null)
+                {
+                    Log.d("VIEW_USER_PROFILE", error.toString());
+                }
+                else
+                {
+                    if (value.exists())
+                    {
+                        user = value.toObject(User.class);
+                        activityViewUserProfileBinding.userProfileName.setText(user.getFirstName() + " " + user.getLastName());
+                        activityViewUserProfileBinding.userProfileEmail.setText(user.getEmail());
+                        activityViewUserProfileBinding.userProfileEntriesCount.setText(Integer.toString(size));
+                        if (user.getImageURL() != null) {
+                            imageRef.child(user.getImageURL()).getDownloadUrl().addOnSuccessListener(uri -> {
+                                Glide.with(ViewUserProfile.this).load(uri).into(activityViewUserProfileBinding.userProfileImg);
+                            }).addOnFailureListener(e -> {
+                                Toast.makeText(ViewUserProfile.this, "Error loading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                        } else {
+                            activityViewUserProfileBinding.userProfileImg.setImageResource(R.mipmap.ic_profile);
+                        }
+                    }
+                }
+            }
+        });
+        /*addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -117,6 +146,6 @@ public class ViewUserProfile extends AppCompatActivity {
                     }
                 }
             }
-        });
+        })*/
     }
 }
