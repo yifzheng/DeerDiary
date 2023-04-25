@@ -28,6 +28,7 @@ public class ViewEntryActivity extends AppCompatActivity {
     private TextView dateField;
     private TextView titleField;
     private TextView contentField;
+    private String date,title,content;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -35,18 +36,12 @@ public class ViewEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.diary_detail);
 
-
-        String date = getIntent().getStringExtra("DATE");
-        String title = getIntent().getStringExtra("TITLE");
-        String content = getIntent().getStringExtra("CONTENT");
-
         dateField = findViewById(R.id.datetimeView);
         titleField = findViewById(R.id.titleView);
         contentField = findViewById(R.id.contentView);
 
-        dateField.setText(date.substring(0, 11));
-        titleField.setText(title);
-        contentField.setText(content);
+        //display diary entry data
+        showEntryData();
 
         final Button returnBtn = (Button) findViewById(R.id.return_btn);
         final Button editBtn = (Button) findViewById(R.id.edit_btn);
@@ -88,14 +83,46 @@ public class ViewEntryActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+    public void showEntryData(){
+        date = getIntent().getStringExtra("DATE");
+        title = getIntent().getStringExtra("TITLE");
+        content = getIntent().getStringExtra("CONTENT");
+
+        dateField.setText(date.substring(0, 11));
+        titleField.setText(title);
+        contentField.setText(content);
+    }
     public void editEntry(){
         try{
-            finish();
+            if(validation.areFieldsPopulated() && !validation.doesTitleAlreadyExist()){
+                if(isTitleChanged() || isContentChanged()) {
+                    Toast.makeText(ViewEntryActivity.this, "Data has been updated", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+                else
+                    throw new Exception("NO DATA HAS BEEN CHANGED");
+            }
+            else
+                return;
         }
         catch (Exception e) {
             String text = "Failed to edit existing diary fields: "+e.getMessage();
             Toast.makeText(ViewEntryActivity.this,text, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
+        }
     }
+    public boolean isTitleChanged(){
+        if(!title.equals(titleField.getText().toString())){
+            return true;
+        }
+        else
+            return false;
+    }
+    public boolean isContentChanged(){
+        if(!content.equals(contentField.getText().toString())){
+            return true;
+        }
+        else
+            return false;
     }
 }

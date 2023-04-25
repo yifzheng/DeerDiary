@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements RecycleViewInterf
         setContentView(R.layout.activity_main);
 
 
-        recyclerView =findViewById(R.id.recyclerview);
+        recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize((true));
 
