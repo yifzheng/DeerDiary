@@ -37,7 +37,7 @@ public class ViewUserProfile extends AppCompatActivity {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference imageRef = storage.getReference().child(FOLDER_NAME);
     private ActivityViewUserProfileBinding activityViewUserProfileBinding;
-    private User user;
+    private Person user;
 
     private static Bundle userObj = new Bundle();
 
