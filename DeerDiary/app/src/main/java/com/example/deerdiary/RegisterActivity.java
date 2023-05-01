@@ -79,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
                             }
                         });
                         // create a user object to store into the database
-                        User user = new User(firstName, lastName, email);
+                        Person user = new User(firstName, lastName, email);
                         // retrieve the UID of recent created user
                         String userUID = task.getResult().getUser().getUid();
                         // add user object into database with the UID as ID of the reference

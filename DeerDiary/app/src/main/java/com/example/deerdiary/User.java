@@ -1,7 +1,7 @@
 package com.example.deerdiary;
 
-public class User {
-    String firstName, lastName, email, imageURL;
+public class User implements Person{
+    private String firstName, lastName, email, imageURL;
 
     public User() {
     }
