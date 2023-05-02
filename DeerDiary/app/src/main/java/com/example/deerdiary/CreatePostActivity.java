@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 public class CreatePostActivity extends AppCompatActivity {
 
@@ -34,6 +35,7 @@ public class CreatePostActivity extends AppCompatActivity {
     private TextInputEditText contentField;
     private TextInputEditText titleField;
     private ArrayList<DiaryEntry> diaryEntries;
+    private FormValidation validation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
         try {
             diaryEntries = MainActivity.currentUserInfo.getParcelableArrayList("diaryEntries");
+            validation = new FormValidation(titleField,contentField,diaryEntries);
         } catch (Exception e){
             System.out.println("Exception: " + e.getMessage());
         }
@@ -95,12 +98,13 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
 
-    public void createNewEntry(){
+    public void createNewEntry() {
         DiaryEntry newEntry = null;
         String userId, titleValue, contentValue, dateTime;
+        String id = "";
 
         try {
-            if (areFieldsPopulated() && !doesTitleAlreadyExist()) {
+            if (validation.areFieldsPopulated() && !validation.doesTitleAlreadyExist()) {
 
                 // retrieve current user id from MainActivity
                 userId = MainActivity.currentUserInfo.getString("userId");
@@ -109,7 +113,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
                 // retrieve current system time
                 dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
-                newEntry = new DiaryEntry(userId, titleValue, contentValue, dateTime);
+                String uuid = UUID.randomUUID().toString();
+                id = uuid;
+                newEntry = new DiaryEntry(userId, titleValue, contentValue, dateTime, id);
             } else {
                 return;
             }
@@ -118,52 +124,15 @@ public class CreatePostActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if (newEntry != null) {
-            diaryRef.add(newEntry).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    startActivity(new Intent(CreatePostActivity.this, MainActivity.class));
-                    quickMakeText("Successfully created a new diary entry");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    quickMakeText("Failed to create a new diary entry: " + e.getMessage());
-                }
-            });
-        } else {
-            quickMakeText("Failed to create a new diary entry: new entry was never initialized");
-        }
-    }
-
-    public boolean areFieldsPopulated() {
-        if (TextUtils.isEmpty(titleField.getText())){
-            titleField.setError("Title cannot be empty");
-            titleField.requestFocus();
-            return false;
-        } else if (TextUtils.isEmpty(contentField.getText())) {
-            contentField.setError("Content cannot be empty");
-            contentField.requestFocus();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public boolean doesTitleAlreadyExist(){
-        if (diaryEntries != null) {
-            for (DiaryEntry entry : diaryEntries) {
-
-                // look for any equivalent strings in titles of the current user's diaries
-                if (entry.getTitle().equals(titleField.getText().toString())) {
-                    titleField.setError("Title already exists");
-                    titleField.requestFocus();
-                    return true;
-                }
+        try {
+            if (newEntry != null) {
+                diaryRef.document(id).set(newEntry);
+                startActivity(new Intent(CreatePostActivity.this, MainActivity.class));
+                quickMakeText("Successfully created a new diary entry");
             }
+        } catch (Exception e) {
+            quickMakeText("Failed to create a new diary entry");
         }
-
-        return false;
     }
 
     public void quickMakeText(String text){
