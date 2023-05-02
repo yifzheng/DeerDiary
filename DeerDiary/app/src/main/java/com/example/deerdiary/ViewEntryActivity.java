@@ -28,7 +28,7 @@ public class ViewEntryActivity extends AppCompatActivity {
     private TextView dateField;
     private TextView titleField;
     private TextView contentField;
-    private String date,title,content;
+    private String date,title,content,id;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -87,6 +87,7 @@ public class ViewEntryActivity extends AppCompatActivity {
         date = getIntent().getStringExtra("DATE");
         title = getIntent().getStringExtra("TITLE");
         content = getIntent().getStringExtra("CONTENT");
+        id = getIntent().getStringExtra("ID");
 
         dateField.setText(date.substring(0, 11));
         titleField.setText(title);
@@ -113,6 +114,7 @@ public class ViewEntryActivity extends AppCompatActivity {
     }
     public boolean isTitleChanged(){
         if(!title.equals(titleField.getText().toString())){
+            diaryRef.document(id).update(title,titleField.getText());
             return true;
         }
         else
@@ -120,6 +122,7 @@ public class ViewEntryActivity extends AppCompatActivity {
     }
     public boolean isContentChanged(){
         if(!content.equals(contentField.getText().toString())){
+            diaryRef.document(id).update(content,contentField.getText());
             return true;
         }
         else

@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements RecycleViewInterf
         intent.putExtra("DATE",entries.get(position).dateTime);
         intent.putExtra("TITLE",entries.get(position).title);
         intent.putExtra("CONTENT",entries.get(position).content);
+        intent.putExtra("ID",entries.get(position).id);
 
         startActivity(intent);
     }
