@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 public class CreatePostActivity extends AppCompatActivity {
 
@@ -96,9 +97,10 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
 
-    public void createNewEntry(){
+    public void createNewEntry() {
         DiaryEntry newEntry = null;
         String userId, titleValue, contentValue, dateTime;
+        String id = "";
 
         try {
             if (validation.areFieldsPopulated() && !validation.doesTitleAlreadyExist()) {
@@ -110,7 +112,9 @@ public class CreatePostActivity extends AppCompatActivity {
 
                 // retrieve current system time
                 dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());
-                newEntry = new DiaryEntry(userId, titleValue, contentValue, dateTime);
+                String uuid = UUID.randomUUID().toString();
+                id = uuid;
+                newEntry = new DiaryEntry(userId, titleValue, contentValue, dateTime, id);
             } else {
                 return;
             }
@@ -119,21 +123,14 @@ public class CreatePostActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if (newEntry != null) {
-            diaryRef.add(newEntry).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                @Override
-                public void onSuccess(DocumentReference documentReference) {
-                    startActivity(new Intent(CreatePostActivity.this, MainActivity.class));
-                    quickMakeText("Successfully created a new diary entry");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    quickMakeText("Failed to create a new diary entry: " + e.getMessage());
-                }
-            });
-        } else {
-            quickMakeText("Failed to create a new diary entry: new entry was never initialized");
+        try {
+            if (newEntry != null) {
+                diaryRef.document(id).set(newEntry);
+                startActivity(new Intent(CreatePostActivity.this, MainActivity.class));
+                quickMakeText("Successfully created a new diary entry");
+            }
+        } catch (Exception e) {
+            quickMakeText("Failed to create a new diary entry");
         }
     }
 

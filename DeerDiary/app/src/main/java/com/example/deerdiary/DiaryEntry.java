@@ -11,11 +11,12 @@ public class DiaryEntry implements Parcelable {
     public  DiaryEntry(){
     }
 
-    public DiaryEntry(String userId, String title, String content, String dateTime){
+    public DiaryEntry(String userId, String title, String content, String dateTime, String id){
         this.userId = userId;
         this.title = title;
         this.content = content;
         this.dateTime = dateTime;
+        this.id = id;
     }
 
     // deserialize from parcel
