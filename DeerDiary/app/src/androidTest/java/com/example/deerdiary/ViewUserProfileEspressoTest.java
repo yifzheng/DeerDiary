@@ -26,6 +26,7 @@ public class ViewUserProfileEspressoTest {
     @Rule
     public ActivityScenarioRule<ViewUserProfile> activityScenarioRule = new ActivityScenarioRule<ViewUserProfile>(ViewUserProfile.class);
 
+    // Issue #23: Scenario 1
     @Test
     public void A_UIElementsDisplayedTest(){
         SystemClock.sleep(1500);
@@ -42,6 +43,15 @@ public class ViewUserProfileEspressoTest {
         onView(withId(R.id.user_profile_home_btn)).perform(click());
         SystemClock.sleep(500);
         intended(hasComponent("com.example.deerdiary.MainActivity"));
+        Intents.release();
+    }
+    // Issue #23: Scenario 2
+    @Test
+    public void C_EditButtonTest(){
+        Intents.init();
+        onView(withId(R.id.user_profile_edit_btn)).perform(click());
+        SystemClock.sleep(500);
+        intended(hasComponent("com.example.deerdiary.EditUserProfile"));
         Intents.release();
     }
 
