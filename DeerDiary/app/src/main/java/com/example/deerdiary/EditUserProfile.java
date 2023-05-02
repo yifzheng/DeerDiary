@@ -155,7 +155,7 @@ public class EditUserProfile extends AppCompatActivity {
 
         userRef.document(userUID).update(user).addOnSuccessListener(unused -> {
             SystemClock.sleep(1000);
-            finish();
+            startActivity(new Intent(EditUserProfile.this, ViewUserProfile.class));
         }).addOnFailureListener(e -> {
             Toast.makeText(EditUserProfile.this, "Error Updating User: " + e.getMessage().toString(), Toast.LENGTH_SHORT).show();
         });

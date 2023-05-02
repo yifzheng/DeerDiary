@@ -40,11 +40,23 @@ public class EditUserProfileEspressoTest {
     }
 
     @Test
-    public void A_DiscardChangedTest(){
+    public void B_DiscardChangedTest(){
         onView(withId(R.id.user_profile_edit_btn)).perform(click());
         SystemClock.sleep(1000);
         Intents.init();
         onView(withId(R.id.cancel_profile_btn)).perform(click());
+        intended(hasComponent("com.example.deerdiary.ViewUserProfile"));
+        Intents.release();
+    }
+
+    // Issue #26: Scenario 2
+    @Test
+    public void C_SaveProfileTest() {
+        onView(withId(R.id.user_profile_edit_btn)).perform(click());
+        SystemClock.sleep(1000);
+        Intents.init();
+        onView(withId(R.id.save_profile_btn)).perform(click());
+        SystemClock.sleep(1000);
         intended(hasComponent("com.example.deerdiary.ViewUserProfile"));
         Intents.release();
     }
