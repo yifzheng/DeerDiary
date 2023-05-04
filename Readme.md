@@ -1,27 +1,29 @@
 # Project Deer Diary
 
 ## Project Team 
-Yifeng Zheng, yifeng.zheng43@bcmail.cuny.edu, yifzheng
-Tianye Chen, tianyecf@gmail.com, tianye-chen
-Collin Shi, cshi0418@gmail.com, collin-shi
-Bohui Nong, bohui64@gmail.com, bohuinong
+| Name | Email | GitHub Username |
+| :---: | :---: | :---: |
+| Yifeng Zheng | yifeng.zheng43@bcmail.cuny.edu | yifzheng |
+| Tianye Chen | tianyecf@gmail.com | tianye-chen |
+| Collin Shi | cshi0418@gmail.com | collin-shi |
+| Bohui Nong | bohui64@gmail.com | bohuinong |
 
 # Deer Diary
 
 ### Digitize a traditional diary
-An Android application that can digitally take entries and to-do tasks
+- An Android application that can digitally take entries and to-do tasks
 
 ### createPost(content)
-Sends a POST request to the backend with the content as the payload.
+- Sends a POST request to the backend with the content as the payload.
 
 ### editPost(content, id)
-Send a PUT request to the backend with the content Id and content body and update the instance in the database.
+- Send a PUT request to the backend with the content Id and content body and update the instance in the database.
 
 ### deletePost(id)
-Sends a DELETE request to the backend and deletes the post with the corresponding id from the backend.
+- Sends a DELETE request to the backend and deletes the post with the corresponding id from the backend.
 
 ### Reminder
-Each post has a due date and we can create an alert when the task has not been completed
+- Each post has a due date and we can create an alert when the task has not been completed
 
 
 ## Risks and Mitigation description ... 
@@ -51,5 +53,6 @@ Mitigation: conduct thorough testing and QA
 ### Iteration Velocity = 2 issues * 3 points = 6
 ### Weekly Velocity = 6 / 2 weks = 3 points
 ## Reflection
-- For this iteration, the two main agendas was the design pattern of the application and continuation of the implementation of app issues. For this iteration, we completed two isses which were viewing user profile and edit user profile. These issues were implemented to provide some customization for the users of the app. 
-- The design pattern implemented in this iteration is the MVC design pattern. The User class represents the Model, the XML file represents the View and App activities represent the Controller.The design principle implemented in our application is the Depedency Inversion/Injection Principle where we try to keep the high level modules such as MainActivity, ViewUserProfile, and EditUserProfile dependent on Interaface methods rather than class methods. For the latter two activities, User class can implement a person interface which can have getter and setter methods for first and last name. This removes some dependencies of the activity on the User class. Secondly, every declaration of a user object will use the interface and instantiate with the class. If there is another class in the future that uses similar methods as the User class from the interface, we can easily upscale and implement it. 
+- For this iteration, the two main agendas was the design pattern of the application and continuation of the implementation of app issues. For this iteration, we completed two isses which were viewing user profile and edit user profile. These issues were implemented to provide some customization for the users of the app. Lessons learned from the previous iteration was carried over to this iteration.
+- The design pattern implemented in this iteration is the MVC design pattern. The User class represents the Model, the XML files, activity_view_user_profile.xml, acitivty_edit_user_profile.xml, and etc represents the View and App activities such as ViewUserPrfile.java and EditUserProfile.java represent the Controller. The model class holds the structure of the user object being created and used in the application while the XML files layout what information from the User class we wanted to display. When the application loads, we first retrieve the current UID of the logged in user from FireBaseAuth and retrieve the user information from the User collection. Once we retrieve the data, we create a local user object to be accessed and the activity then sets what gets displayed on the XML file. Any changes made in the activity is updated to the database which is in turn updated locally on the activity through a snap shot listener. This implementation structure is carried over to the DiaryEntry class which has the DiaryEntry class as the Model, the XML file as the View, and the activity and recycler view adapater as the controller.
+- The design principle implemented in our application is the Depedency Inversion/Injection Principle where we try to keep the high level modules such as MainActivity, ViewUserProfile, and EditUserProfile dependent on Interaface methods rather than class methods. For the latter two activities, User class can implement a person interface which can have getter and setter methods for first and last name. This removes some dependencies of the activity on the User class. Secondly, every declaration of a user object will use the interface and instantiate with the class. If there is another class in the future that uses similar methods as the User class from the interface, we can easily upscale and implement it. 
