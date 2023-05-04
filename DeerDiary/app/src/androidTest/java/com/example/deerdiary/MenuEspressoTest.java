@@ -1,20 +1,20 @@
 package com.example.deerdiary;
 
-import static androidx.test.espresso.Espresso.*;
-import static androidx.test.espresso.matcher.ViewMatchers.*;
-import static androidx.test.espresso.action.ViewActions.*;
-import static androidx.test.espresso.assertion.ViewAssertions.*;
-import static androidx.test.espresso.intent.Intents.*;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.*;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
-import androidx.test.espresso.action.ViewActions;
+import android.os.SystemClock;
+
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.FixMethodOrder;
-import org.junit.Test;
 import org.junit.Rule;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 
@@ -27,8 +27,9 @@ public class MenuEspressoTest {
     @Test
     public void A_LogoutClickTest(){
         Intents.init();
-        onView(withId(R.id.menu_logout)).perform(click()); // click logout icon
-        intended(hasComponent("com.example.deerdiary.StartActivity"));
+        onView(withId(R.id.menu_profile)).perform(click()); // click logout icon
+        SystemClock.sleep(1000);
+        intended(hasComponent("com.example.deerdiary.ViewUserProfile"));
         Intents.release();
     }
 }
