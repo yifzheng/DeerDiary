@@ -7,15 +7,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.deerdiary.databinding.ActivityRegisterBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,18 +35,16 @@ public class RegisterActivity extends AppCompatActivity {
         // set input type of password
         activityRegisterBinding.registerPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-        activityRegisterBinding.registerButton.setOnClickListener(view -> {
-            createUser();
-        });
+        activityRegisterBinding.registerButton.setOnClickListener(view -> createUser());
 
         activityRegisterBinding.registerLoginhere.setOnClickListener(view -> startActivity(new Intent(RegisterActivity.this, LoginActivity.class)));
     }
 
     public void createUser() {
-        String firstName = activityRegisterBinding.registerFirstname.getText().toString();
-        String lastName = activityRegisterBinding.registerLastname.getText().toString();
-        String email = activityRegisterBinding.registerEmail.getText().toString();
-        String password = activityRegisterBinding.registerPassword.getText().toString();
+        String firstName = Objects.requireNonNull(activityRegisterBinding.registerFirstname.getText()).toString();
+        String lastName = Objects.requireNonNull(activityRegisterBinding.registerLastname.getText()).toString();
+        String email = Objects.requireNonNull(activityRegisterBinding.registerEmail.getText()).toString();
+        String password = Objects.requireNonNull(activityRegisterBinding.registerPassword.getText()).toString();
 
         if (TextUtils.isEmpty(firstName)) {
             activityRegisterBinding.registerFirstname.setError("First Name cannot be empty");
@@ -67,36 +59,18 @@ public class RegisterActivity extends AppCompatActivity {
             activityRegisterBinding.registerPassword.setError("Password cannot be empty");
             activityRegisterBinding.registerPassword.requestFocus();
         } else {
-            myAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        // if we successfully created user with email and password, we send email verification
-                        myAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(RegisterActivity.this, "User registered successfully. Please verify your email.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        // create a user object to store into the database
-                        Person user = new User(firstName, lastName, email);
-                        // retrieve the UID of recent created user
-                        String userUID = task.getResult().getUser().getUid();
-                        // add user object into database with the UID as ID of the reference
-                        userRef.document(userUID).set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
-                                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(RegisterActivity.this, "Error creating user: " + e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } else {
-                        Toast.makeText(RegisterActivity.this, "Registration Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+            myAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    // if we successfully created user with email and password, we send email verification
+                    Objects.requireNonNull(myAuth.getCurrentUser()).sendEmailVerification().addOnCompleteListener(task1 -> Toast.makeText(RegisterActivity.this, "User registered successfully. Please verify your email.", Toast.LENGTH_SHORT).show());
+                    // create a user object to store into the database
+                    Person user = new User(firstName, lastName, email);
+                    // retrieve the UID of recent created user
+                    String userUID = Objects.requireNonNull(task.getResult().getUser()).getUid();
+                    // add user object into database with the UID as ID of the reference
+                    userRef.document(userUID).set(user).addOnSuccessListener(unused -> startActivity(new Intent(RegisterActivity.this, LoginActivity.class))).addOnFailureListener(e -> Toast.makeText(RegisterActivity.this, "Error creating user: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Registration Error: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
