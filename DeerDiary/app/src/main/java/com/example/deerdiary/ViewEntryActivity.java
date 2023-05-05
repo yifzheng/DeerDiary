@@ -88,6 +88,9 @@ public class ViewEntryActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
+            case R.id.menu_home:
+                startActivity(new Intent(ViewEntryActivity.this, MainActivity.class));
+                return true;
             case R.id.menu_profile:
                 startActivity(new Intent(ViewEntryActivity.this, ViewUserProfile.class));
                 return true; // have not created profile activity yet
