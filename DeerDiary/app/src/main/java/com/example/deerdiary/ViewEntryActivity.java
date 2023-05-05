@@ -31,6 +31,8 @@ public class ViewEntryActivity extends AppCompatActivity {
     private TextView contentField;
     private String date,title,content,id;
     private boolean isClicked;// Checks if the edit button is clicked
+    private Button return_delete_Btn;
+    private Button editBtn;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +50,8 @@ public class ViewEntryActivity extends AppCompatActivity {
         showEntryData();
 
         //Return button will change to delete button after the edit button is clicked
-        final Button return_delete_Btn = (Button) findViewById(R.id.return_delete_btn);
-        final Button editBtn = (Button) findViewById(R.id.edit_btn);
+        return_delete_Btn = (Button) findViewById(R.id.return_delete_btn);
+        editBtn = (Button) findViewById(R.id.edit_btn);
 
         try {
             diaryEntries = MainActivity.currentUserInfo.getParcelableArrayList("diaryEntries");
@@ -61,7 +63,6 @@ public class ViewEntryActivity extends AppCompatActivity {
         editBtn.setOnClickListener(view -> {
             if(isClicked){
                 editEntry();
-                return_delete_Btn.setText("RETURN");
             }
             else {
                 return_delete_Btn.setText("DELETE");
@@ -114,14 +115,13 @@ public class ViewEntryActivity extends AppCompatActivity {
 
     public void editEntry(){
         try{
-            if(validation.areFieldsPopulated() && !validation.doesTitleAlreadyExist()){
+            if(validation.areFieldsPopulated()){
                 if(isTitleChanged() || isContentChanged()) {
                     Toast.makeText(ViewEntryActivity.this, "Data has been updated", Toast.LENGTH_SHORT).show();
-                    setEnable(false);
                 }
-                else
-                    throw new Exception("NO DATA HAS BEEN CHANGED");
             }
+            setEnable(false);
+            return_delete_Btn.setText("RETURN");
         }
         catch (Exception e) {
             String text = "Failed to edit existing diary fields: "+e.getMessage();
@@ -133,11 +133,12 @@ public class ViewEntryActivity extends AppCompatActivity {
         diaryRef.document(id).delete();
     }
     public boolean isTitleChanged(){
-        if(!title.equals(titleField.getText().toString())){
-            diaryRef.document(id).update("title",titleField.getText().toString());
-            return true;
+        if(!title.equals(titleField.getText().toString())) {
+            if (!validation.doesTitleAlreadyExist()) {
+                diaryRef.document(id).update("title", titleField.getText().toString());
+                return true;
+            }
         }
-        else
             return false;
     }
     public boolean isContentChanged(){
