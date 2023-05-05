@@ -1,31 +1,29 @@
 package com.example.deerdiary;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RecycleViewInterface{
 
-    private FirebaseAuth myAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth myAuth = FirebaseAuth.getInstance();
     private FirebaseUser currentUser;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference diaryRef = db.collection("diaryEntry");
@@ -45,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements RecycleViewInterf
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize((true));
 
-        entries= new ArrayList<DiaryEntry>();
+        entries= new ArrayList<>();
         adapter = new Adapter(MainActivity.this, entries, this);
 
         recyclerView.setAdapter(adapter);
@@ -57,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements RecycleViewInterf
         super.onStart();
 
         currentUser = myAuth.getCurrentUser();
+        assert currentUser != null;
         currentUserInfo.putString("userId", currentUser.getUid());
 
         retrieveDiaryData();
@@ -71,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements RecycleViewInterf
     }
 
     // handle icons clicked on menu bar
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -90,28 +90,26 @@ public class MainActivity extends AppCompatActivity implements RecycleViewInterf
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void retrieveDiaryData(){
         // Retrieve all the diaries where the userId of DiaryEntry objects in diaryRef matches the current userId
-        Query query = diaryRef.whereEqualTo("userId", FirebaseAuth.getInstance().getCurrentUser().getUid());
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    entries.clear();
-                    // Loop through all the retrieved documents
-                    for(QueryDocumentSnapshot doc : task.getResult()){
-                        DiaryEntry diaryEntry = doc.toObject(DiaryEntry.class);
-                        diaryEntry.setId(doc.getId());
-                        entries.add(diaryEntry);
-                    }
-                    //Notify any registered observers that the data set has changed.
-                    adapter.notifyDataSetChanged();
-                    // Stored in a bundle as a parcel for easy access in other activities
-                    currentUserInfo.putParcelableArrayList("diaryEntries", entries);
-                    currentUserInfo.putInt("entryCount", entries.size());
+        Query query = diaryRef.whereEqualTo("userId", Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
+        query.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                entries.clear();
+                // Loop through all the retrieved documents
+                for(QueryDocumentSnapshot doc : task.getResult()){
+                    DiaryEntry diaryEntry = doc.toObject(DiaryEntry.class);
+                    diaryEntry.setId(doc.getId());
+                    entries.add(diaryEntry);
                 }
-
+                //Notify any registered observers that the data set has changed.
+                adapter.notifyDataSetChanged();
+                // Stored in a bundle as a parcel for easy access in other activities
+                currentUserInfo.putParcelableArrayList("diaryEntries", entries);
+                currentUserInfo.putInt("entryCount", entries.size());
             }
+
         });
 
     }

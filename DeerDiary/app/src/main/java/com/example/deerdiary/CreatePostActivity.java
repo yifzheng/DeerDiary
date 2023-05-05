@@ -1,24 +1,20 @@
 package com.example.deerdiary;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -26,11 +22,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
+import java.util.Objects;
+
 
 public class CreatePostActivity extends AppCompatActivity {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseAuth myAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth myAuth = FirebaseAuth.getInstance();
     private final CollectionReference diaryRef = db.collection("diaryEntry");
     private TextInputEditText contentField;
     private TextInputEditText titleField;
@@ -54,19 +52,9 @@ public class CreatePostActivity extends AppCompatActivity {
             System.out.println("Exception: " + e.getMessage());
         }
 
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createNewEntry();
-            }
-        });
+        createButton.setOnClickListener(v -> createNewEntry());
 
-        discardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(CreatePostActivity.this, MainActivity.class));
-            }
-        });
+        discardButton.setOnClickListener(v -> startActivity(new Intent(CreatePostActivity.this, MainActivity.class)));
     }
 
     // function to display menu button
@@ -78,6 +66,7 @@ public class CreatePostActivity extends AppCompatActivity {
     }
 
     // handle icons clicked on menu bar
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -108,8 +97,8 @@ public class CreatePostActivity extends AppCompatActivity {
 
                 // retrieve current user id from MainActivity
                 userId = MainActivity.currentUserInfo.getString("userId");
-                titleValue = titleField.getText().toString();
-                contentValue = contentField.getText().toString();
+                titleValue = Objects.requireNonNull(titleField.getText()).toString();
+                contentValue = Objects.requireNonNull(contentField.getText()).toString();
 
                 // retrieve current system time
                 dateTime = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(new Date());

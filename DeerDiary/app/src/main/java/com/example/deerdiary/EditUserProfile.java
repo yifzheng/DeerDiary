@@ -1,5 +1,6 @@
 package com.example.deerdiary;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -23,14 +24,15 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class EditUserProfile extends AppCompatActivity {
     // fire store references
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference userRef = db.collection("User");
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private StorageReference imageRef = storage.getReference().child(FOLDER_NAME);
-    private FirebaseAuth myAuth = FirebaseAuth.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final CollectionReference userRef = db.collection("User");
+    private final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private final StorageReference imageRef = storage.getReference().child(FOLDER_NAME);
+    private final FirebaseAuth myAuth = FirebaseAuth.getInstance();
     private static final String FILE_EXTENSION = ".jpg";
     private static final String FOLDER_NAME = "images";
     private static final String USER_UID = "userUID";
@@ -53,13 +55,7 @@ public class EditUserProfile extends AppCompatActivity {
         String firstName = extras.getString(FIRST_NAME);
         String lastName = extras.getString(LAST_NAME);
         userUID = extras.getString(USER_UID);
-        String imageURI = extras.getString(IMAGE_URI);
-        /*imageRef.child(imageURI).getDownloadUrl().addOnSuccessListener(uri -> {
-            Glide.with(EditUserProfile.this).load(uri).into(binding.userProfileImg);
-        }).addOnFailureListener(e -> {
-            Toast.makeText(EditUserProfile.this, "Error loading image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        });
-*/
+
         // <---- Load information into necessary fields ------------>
         binding.editUserFirstName.setText(firstName);
         binding.editUserLastName.setText(lastName);
@@ -89,6 +85,7 @@ public class EditUserProfile extends AppCompatActivity {
     }
 
     // handle icons clicked on menu bar
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -121,11 +118,7 @@ public class EditUserProfile extends AppCompatActivity {
         if (imageUri != null)
         {
             fileName = System.currentTimeMillis() + FILE_EXTENSION;
-            imageRef.child(fileName).putFile(imageUri).addOnSuccessListener(taskSnapshot -> {
-                Toast.makeText(this, "Successfully Uploaded", Toast.LENGTH_SHORT).show();
-            }).addOnFailureListener(e -> {
-                Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            });
+            imageRef.child(fileName).putFile(imageUri).addOnSuccessListener(taskSnapshot -> Toast.makeText(this, "Successfully Uploaded", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -135,8 +128,8 @@ public class EditUserProfile extends AppCompatActivity {
         {
             uploadImage();
         }
-        String firstName = binding.editUserFirstName.getText().toString();
-        String lastName = binding.editUserLastName.getText().toString();
+        String firstName = Objects.requireNonNull(binding.editUserFirstName.getText()).toString();
+        String lastName = Objects.requireNonNull(binding.editUserLastName.getText()).toString();
 
         Map<String, Object> user = new HashMap<>();
         if (!firstName.isEmpty())
@@ -156,8 +149,6 @@ public class EditUserProfile extends AppCompatActivity {
         userRef.document(userUID).update(user).addOnSuccessListener(unused -> {
             SystemClock.sleep(1000);
             startActivity(new Intent(EditUserProfile.this, ViewUserProfile.class));
-        }).addOnFailureListener(e -> {
-            Toast.makeText(EditUserProfile.this, "Error Updating User: " + e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-        });
+        }).addOnFailureListener(e -> Toast.makeText(EditUserProfile.this, "Error Updating User: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }
