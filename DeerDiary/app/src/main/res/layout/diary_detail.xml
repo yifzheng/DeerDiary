@@ -10,7 +10,7 @@
         android:orientation="vertical">
 
 
-        <TextView
+        <EditText
             android:id="@+id/datetimeView"
             android:layout_width="190dp"
             android:layout_height="40dp"
@@ -24,7 +24,7 @@
             android:textAlignment="center"
             android:padding="5dp"/>
 
-        <TextView
+        <EditText
             android:id="@+id/titleView"
             android:layout_width="350dp"
             android:layout_height="60dp"
@@ -36,7 +36,7 @@
             android:textSize="28sp"
             android:paddingLeft="20dp"
             android:padding="10dp"/>
-        <TextView
+        <EditText
             android:id="@+id/contentView"
             android:layout_width="350dp"
             android:layout_height="200dp"
@@ -93,7 +93,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/return_btn"
+            android:id="@+id/return_delete_btn"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
