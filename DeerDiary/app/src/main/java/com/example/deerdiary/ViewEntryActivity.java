@@ -155,7 +155,7 @@ public class ViewEntryActivity extends AppCompatActivity {
     //If the edit button is click, the fields are enable else no
     public void setEnable(boolean status){
         isClicked = status;
-        titleField.setEnabled(status);
-        contentField.setEnabled(status);
+        titleField.setFocusableInTouchMode(status);
+        contentField.setFocusableInTouchMode(status);
     }
 }
