@@ -3,7 +3,6 @@ package com.example.deerdiary;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -93,7 +92,7 @@ public class CreatePostActivity extends AppCompatActivity {
         String id = "";
 
         try {
-            if (validation.areFieldsPopulated() && !validation.doesTitleAlreadyExist()) {
+            if (validation.areFieldsPopulated() && !validation.titleValidation()) {
 
                 // retrieve current user id from MainActivity
                 userId = MainActivity.currentUserInfo.getString("userId");

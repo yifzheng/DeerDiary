@@ -3,10 +3,7 @@ package com.example.deerdiary;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class FormValidation {
     TextView titleField;
@@ -32,7 +29,7 @@ public class FormValidation {
         }
     }
 
-    public boolean doesTitleAlreadyExist(){
+    public boolean titleValidation(){
         if (diaryEntries != null) {
             for (DiaryEntry entry : diaryEntries) {
 
@@ -43,6 +40,11 @@ public class FormValidation {
                     return true;
                 }
             }
+        }
+        if(titleField.getText().toString().length() >= 20){
+            titleField.setError("Title cannot be longer than 20 characters");
+            titleField.requestFocus();
+            return true;
         }
 
         return false;
