@@ -13,7 +13,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
 
     public MyViewHolder(@NonNull View itemView, RecycleViewInterface recycleViewInterface) {
         super(itemView);
-        title=itemView.findViewById(R.id.titleView);
+        title=itemView.findViewById(R.id.createpost_title_field);
         dateTime=itemView.findViewById(R.id.datetimeView);
 
         itemView.setOnClickListener(new View.OnClickListener(){

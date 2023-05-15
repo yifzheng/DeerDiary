@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:id="@+id/titleView"
+                android:id="@+id/createpost_title_field"
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:padding="25dp"

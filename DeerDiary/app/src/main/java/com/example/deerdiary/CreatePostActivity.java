@@ -3,11 +3,11 @@ package com.example.deerdiary;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,8 +30,8 @@ public class CreatePostActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseAuth myAuth = FirebaseAuth.getInstance();
     private final CollectionReference diaryRef = db.collection("diaryEntry");
-    private TextInputEditText contentField;
-    private TextInputEditText titleField;
+    private TextView contentField;
+    private TextView titleField;
     private ArrayList<DiaryEntry> diaryEntries;
     private FormValidation validation;
 
@@ -93,7 +93,7 @@ public class CreatePostActivity extends AppCompatActivity {
         String id = "";
 
         try {
-            if (validation.areFieldsPopulated() && !validation.doesTitleAlreadyExist()) {
+            if (validation.areFieldsPopulated() && !validation.titleValidation()) {
 
                 // retrieve current user id from MainActivity
                 userId = MainActivity.currentUserInfo.getString("userId");
