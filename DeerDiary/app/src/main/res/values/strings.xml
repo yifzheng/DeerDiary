@@ -17,4 +17,9 @@
     <string name="edit">Edit</string>
     <string name="return_to_menu">Return</string>
     <string name="name_placeholder">LastName, FirstName</string>
+
+    <string-array name="sort_type">
+        <item>Date</item>
+        <item>Title</item>
+    </string-array>
 </resources>
