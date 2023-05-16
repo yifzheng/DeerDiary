@@ -62,9 +62,10 @@ Mitigation: conduct thorough testing and QA
 | :---: | :---: | :---: |
 | [Edit Diary Entry](https://github.com/cunychenhclass/cisc3171proj-group6/issues/4) | 3 | yes |
 | [Delete Diary Entry](https://github.com/cunychenhclass/cisc3171proj-group6/issues/3) | 3 | yes |
+| [Sorting list of entries](https://github.com/cunychenhclass/cisc3171proj-group6/issues/5) | 2 | yes |
 
-### Iteration Velocity = 2 issues * 3 points = 6 points
-### Weekly Velocity = 6 points / 2 weeks = 3 points/week
+### Iteration Velocity = 2 issues * 3 points + (1 issue * 2 points) = 8 points
+### Weekly Velocity = 8 points / 2 weeks = 4 points/week
 # Reflection
-- For this final iteration, we completed the implementation of edit and delteting an existing diary entry. We we familiar with the process so we were able to complete these issues on time. Additionally, to touch up the code, we tried to make the code DRY and make sure the tests for the issues were running as planned.
+- For this final iteration, we completed the implementation of edit and delteting an existing diary entry and sorting entries by title and date. We are familiar with the process so we were able to complete these issues on time. Additionally, to touch up the code, we tried to make the code DRY and make sure the tests for the issues were running as planned.
 - The second design pattern implmented in this application was the Data Transfer Object design pattern or known as Value Object pattern. This design pattern is used in distributed systems and multi-layered architectures. This design pattern aims to deliver data between different layers of the application. In our app, we have two different layes: front-end, the app, and backend, firebase. This structure allows us to encapsulate all the necesary information needed to be stored and accessed by the front-end. It is structured to be easily serializable making it suitable for JSON or XML transmission. We can now store all data as an object in our database and be able to covert the data retriveed from the database back to an object.
