@@ -119,7 +119,12 @@ public class ViewEntryActivity extends AppCompatActivity {
 
     public void editEntry(){
         try{
-            if(validation.areFieldsPopulated() && !validation.titleValidation()){
+            if(title.equals(titleField.getText().toString())){
+                return_delete_Btn.setText("RETURN");
+                editBtn.setText("EDIT");
+                setEnable(false);
+            }
+            else if(validation.areFieldsPopulated() && !validation.titleValidation()){
                 if(isTitleChanged() | isContentChanged()) {
                     Toast.makeText(ViewEntryActivity.this, "Data has been updated", Toast.LENGTH_SHORT).show();
                 }
