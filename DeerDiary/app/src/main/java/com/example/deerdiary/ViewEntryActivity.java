@@ -40,8 +40,8 @@ public class ViewEntryActivity extends AppCompatActivity {
         setContentView(R.layout.diary_detail);
 
         dateField = findViewById(R.id.datetimeView);
-        titleField = findViewById(R.id.titleView);
-        contentField = findViewById(R.id.contentView);
+        titleField = findViewById(R.id.createpost_title_field);
+        contentField = findViewById(R.id.createpost_content_field);
 
         //unable to edit the title and content field
         setEnable(false);
@@ -50,8 +50,8 @@ public class ViewEntryActivity extends AppCompatActivity {
         showEntryData();
 
         //Return button will change to delete button after the edit button is clicked
-        return_delete_Btn = (Button) findViewById(R.id.return_delete_btn);
-        editBtn = (Button) findViewById(R.id.edit_btn);
+        return_delete_Btn = (Button) findViewById(R.id.createpost_discard_button);
+        editBtn = (Button) findViewById(R.id.createpost_create_button);
 
         try {
             diaryEntries = MainActivity.currentUserInfo.getParcelableArrayList("diaryEntries");
@@ -66,6 +66,7 @@ public class ViewEntryActivity extends AppCompatActivity {
             }
             else {
                 return_delete_Btn.setText("DELETE");
+                editBtn.setText("SAVE");
                 setEnable(true);
             }
         });
@@ -118,13 +119,20 @@ public class ViewEntryActivity extends AppCompatActivity {
 
     public void editEntry(){
         try{
-            if(validation.areFieldsPopulated()){
+            if(title.equals(titleField.getText().toString())){
+                return_delete_Btn.setText("RETURN");
+                editBtn.setText("EDIT");
+                setEnable(false);
+            }
+            else if(validation.areFieldsPopulated() && !validation.titleValidation()){
                 if(isTitleChanged() | isContentChanged()) {
                     Toast.makeText(ViewEntryActivity.this, "Data has been updated", Toast.LENGTH_SHORT).show();
                 }
+                return_delete_Btn.setText("RETURN");
+                editBtn.setText("EDIT");
+                setEnable(false);
             }
-            setEnable(false);
-            return_delete_Btn.setText("RETURN");
+
         }
         catch (Exception e) {
             String text = "Failed to edit existing diary fields: "+e.getMessage();
@@ -137,11 +145,10 @@ public class ViewEntryActivity extends AppCompatActivity {
     }
     public boolean isTitleChanged(){
         if(!title.equals(titleField.getText().toString())) {
-            if (!validation.doesTitleAlreadyExist()) {
-                diaryRef.document(id).update("title", titleField.getText().toString());
-                return true;
-            }
+            diaryRef.document(id).update("title", titleField.getText().toString());
+            return true;
         }
+        else
             return false;
     }
     public boolean isContentChanged(){
@@ -156,6 +163,8 @@ public class ViewEntryActivity extends AppCompatActivity {
     public void setEnable(boolean status){
         isClicked = status;
         titleField.setFocusableInTouchMode(status);
+        titleField.setFocusable(status);
         contentField.setFocusableInTouchMode(status);
+        contentField.setFocusable(status);
     }
 }

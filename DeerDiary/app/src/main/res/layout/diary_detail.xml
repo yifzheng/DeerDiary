@@ -25,7 +25,7 @@
             android:padding="5dp"/>
 
         <EditText
-            android:id="@+id/titleView"
+            android:id="@+id/createpost_title_field"
             android:layout_width="350dp"
             android:layout_height="60dp"
             android:layout_marginBottom="-50dp"
@@ -37,7 +37,7 @@
             android:paddingLeft="20dp"
             android:padding="10dp"/>
         <EditText
-            android:id="@+id/contentView"
+            android:id="@+id/createpost_content_field"
             android:layout_width="350dp"
             android:layout_height="220dp"
             android:layout_marginTop="90dp"
@@ -78,7 +78,7 @@
                 android:padding="2dp" />
         </LinearLayout>-->
         <Button
-            android:id="@+id/edit_btn"
+            android:id="@+id/createpost_create_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -93,7 +93,7 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/return_delete_btn"
+            android:id="@+id/createpost_discard_button"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:layout_height="wrap_content"

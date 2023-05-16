@@ -64,37 +64,37 @@ public class EditDiaryPostEspressoTest {
     public void A_UIElementsDisplayedTest(){
        onView(withId(R.id.recyclerview)).perform(actionOnItemAtPosition(recyclerItemCount, click()));
        onView(withId(R.id.datetimeView)).check(matches(isDisplayed()));
-       onView(withId(R.id.titleView)).check(matches(isDisplayed()));
-       onView(withId(R.id.contentView)).check(matches(isDisplayed()));
-       onView(withId(R.id.edit_btn)).check(matches(isDisplayed()));
-       onView(withId(R.id.return_delete_btn)).check(matches(isDisplayed()));
-       onView(withId(R.id.return_delete_btn)).check(matches(withText("RETURN")));
-       onView(withId(R.id.edit_btn)).perform(click());
-       onView(withId(R.id.return_delete_btn)).check(matches(withText("DELETE")));
+       onView(withId(R.id.createpost_title_field)).check(matches(isDisplayed()));
+       onView(withId(R.id.createpost_content_field)).check(matches(isDisplayed()));
+       onView(withId(R.id.createpost_create_button)).check(matches(isDisplayed()));
+       onView(withId(R.id.createpost_discard_button)).check(matches(isDisplayed()));
+       onView(withId(R.id.createpost_discard_button)).check(matches(withText("RETURN")));
+       onView(withId(R.id.createpost_create_button)).perform(click());
+       onView(withId(R.id.createpost_discard_button)).check(matches(withText("DELETE")));
     }
 
     //<-----Issue #4: Scenario 1-------------->
     @Test
     public void B_EmptyContentTest(){
         onView(withId(R.id.recyclerview)).perform(actionOnItemAtPosition(recyclerItemCount, click()));
-        onView(withId(R.id.edit_btn)).perform(click());
-        onView(withId(R.id.contentView)).perform(click());
+        onView(withId(R.id.createpost_create_button)).perform(click());
+        onView(withId(R.id.createpost_content_field)).perform(click());
 
         // Deleting all the text within the content text box
         for (int i = 0; i < contentText.length(); i++){
-            onView(withId(R.id.contentView)).perform(pressKey(KeyEvent.KEYCODE_DEL));
+            onView(withId(R.id.createpost_content_field)).perform(pressKey(KeyEvent.KEYCODE_DEL));
         }
 
-        onView(withId(R.id.contentView)).perform(closeSoftKeyboard());
-        onView(withId(R.id.edit_btn)).perform(click());
-        onView(withId(R.id.contentView)).check(matches(hasErrorText("Content cannot be empty")));
+        onView(withId(R.id.createpost_content_field)).perform(closeSoftKeyboard());
+        onView(withId(R.id.createpost_create_button)).perform(click());
+        onView(withId(R.id.createpost_content_field)).check(matches(hasErrorText("Content cannot be empty")));
     }
 
     //<-----Issue #4: Scenario 1-------------->
     @Test
     public void C_ReturnButtonTest(){
         onView(withId(R.id.recyclerview)).perform(actionOnItemAtPosition(recyclerItemCount, click()));
-        onView(withId(R.id.return_delete_btn)).perform(click());
+        onView(withId(R.id.createpost_discard_button)).perform(click());
         onView(withId(R.id.recyclerview)).check(matches(isDisplayed()));
     }
 
@@ -104,8 +104,8 @@ public class EditDiaryPostEspressoTest {
         int newRecyclerItemCount;
 
         onView(withId(R.id.recyclerview)).perform(actionOnItemAtPosition(recyclerItemCount, click()));
-        onView(withId(R.id.edit_btn)).perform(click());
-        onView(withId(R.id.return_delete_btn)).perform(click());
+        onView(withId(R.id.createpost_create_button)).perform(click());
+        onView(withId(R.id.createpost_discard_button)).perform(click());
 
         // -1 to reflect 0 based numbering
         newRecyclerItemCount = getRecyclerItemCount() - 1;
