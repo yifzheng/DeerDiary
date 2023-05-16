@@ -23,6 +23,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements RecycleViewInterface, AdapterView.OnItemSelectedListener {
@@ -42,14 +45,13 @@ public class MainActivity extends AppCompatActivity implements RecycleViewInterf
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setupSort();
         recyclerView =findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize((true));
 
         entries= new ArrayList<>();
         adapter = new Adapter(MainActivity.this, entries, this);
-
+        setupSort();
         recyclerView.setAdapter(adapter);
     }
 
@@ -109,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements RecycleViewInterf
                 }
                 //Notify any registered observers that the data set has changed.
                 adapter.notifyDataSetChanged();
+                sortByDate();
                 // Stored in a bundle as a parcel for easy access in other activities
                 currentUserInfo.putParcelableArrayList("diaryEntries", entries);
                 currentUserInfo.putInt("entryCount", entries.size());
@@ -121,9 +124,9 @@ public class MainActivity extends AppCompatActivity implements RecycleViewInterf
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
     // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.sort_type, android.R.layout.simple_spinner_item);
+                R.array.sort_type, R.layout.my_spinner);
     // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.my_spinner_dropdown);
     // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(this);
@@ -143,7 +146,28 @@ public class MainActivity extends AppCompatActivity implements RecycleViewInterf
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String text = parent.getItemAtPosition(position).toString();
+        if(position == 0){
+            sortByDate();
+        }
+        else if (position == 1)
+            sortByTitle();
+        adapter.notifyDataSetChanged();
+    }
+    public void sortByDate(){
+        Collections.sort(entries, new Comparator<DiaryEntry>() {
+            @Override
+            public int compare(DiaryEntry o1, DiaryEntry o2) {
+                return o2.dateTime.compareTo(o1.dateTime);
+            }
+        });
+    }
+    public void sortByTitle() {
+        Collections.sort(entries, new Comparator<DiaryEntry>() {
+            @Override
+            public int compare(DiaryEntry o1, DiaryEntry o2) {
+                return o1.title.compareToIgnoreCase(o2.title);
+            }
+        });
     }
 
     @Override
