@@ -69,3 +69,11 @@ Mitigation: conduct thorough testing and QA
 # Reflection
 - For this final iteration, we completed the implementation of edit and delteting an existing diary entry and sorting entries by title and date. We are familiar with the process so we were able to complete these issues on time. Additionally, to touch up the code, we tried to make the code DRY and make sure the tests for the issues were running as planned.
 - The second design pattern implmented in this application was the Data Transfer Object design pattern or known as Value Object pattern. This design pattern is used in distributed systems and multi-layered architectures. This design pattern aims to deliver data between different layers of the application. In our app, we have two different layes: front-end, the app, and backend, firebase. This structure allows us to encapsulate all the necesary information needed to be stored and accessed by the front-end. It is structured to be easily serializable making it suitable for JSON or XML transmission. We can now store all data as an object in our database and be able to covert the data retriveed from the database back to an object.
+# Burnout Chart
+![burnout_chart](https://github.com/cunychenhclass/cisc3171proj-group6/assets/70163313/008945c6-3373-4af7-88e1-2ff3df9348fc)
+# App Demo
+
+
+https://github.com/cunychenhclass/cisc3171proj-group6/assets/70163313/5cdc09c3-50d5-41d8-b311-04947fddceef
+
+
